@@ -35,7 +35,8 @@
 .App {
   height: 100vh;
   width: 100vw;
-  background-color: #fdcb6e;
+  background-color: #EEB97D;
+  /* background-color: #fdcb6e;  */
   display: flex;
   justify-content: center;
   align-items: center;
