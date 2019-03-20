@@ -1,0 +1,43 @@
+{
+    "terminals": [
+        "Hyper",
+        "iTerm2",
+        "Terminal (default)"
+    ],
+    "shells": [
+        "Bash (default)",
+        "Fish",
+        "Zsh"
+    ],
+    "editors": [
+        "Atom",
+        "Brackets",
+        "Emacs (Mac Port)",
+        "NeoVim",
+        "Sublime",
+        "Vim",
+        "VS Code"
+    ],
+    "languages": [
+        "Golang",
+        "Java",
+        "MySQL",
+        "Node.js",
+        "Python",
+        "Ruby",
+        "Rust",
+        "Scala"
+    ],
+    "tools": [
+        "BasicTeX",
+        "Cheatsheet",
+        "Docker",
+        "Heroku",
+        "Insomnia",
+        "MacTeX",
+        "Postman",
+        "Vagrant",
+        "Redis"
+
+    ]
+}
