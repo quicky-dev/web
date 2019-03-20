@@ -11,8 +11,12 @@
     /* Firefox 3.5 - 3.6 */
     box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
 
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
 }
 
 h1, h2, h3, h4, h5, p {
     color: #4E555F;
 }
+
