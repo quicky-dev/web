@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Landing from '../landing/Landing'
+import Download from '../download/Download'
 import './Main.css'
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 // Horizontal Linear Stepper
@@ -141,8 +142,12 @@ class Main extends React.Component {
       return (
         <Router>
         <div className="main">
+
+        {/* My Routes w/ their Components */}
         <Route path="/" exact component={Landing} />
-`
+        <Route path="/form/download" exact component={Download} />
+
+        {/* Stepper Component */}
         <div className={classes.root}>
         <Stepper nonLinear activeStep={activeStep}>
           {steps.map((label, index) => (
