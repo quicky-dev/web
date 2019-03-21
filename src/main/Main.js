@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import Landing from '../landing/Landing'
-import Download from '../download/Download'
+// Components
+import Landing from '../landing/Landing';
+import Download from '../download/Download';
+import Form from '../form/Form';
+// CSS 
 import './Main.css'
+// React Router
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 // Horizontal Linear Stepper
 import PropTypes from 'prop-types';
@@ -12,11 +16,12 @@ import StepButton from '@material-ui/core/StepButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
+// React Router --> Functions for Each Page
 function LandingPage() {
     
 }
 
-function TerminalPage() {
+function TermShellPage() {
 
 }
 
@@ -28,7 +33,7 @@ function LanguagePage() {
 
 }
 
-function ToolPage() {
+function ToolDbPage() {
 
 }
 
@@ -54,7 +59,7 @@ const styles = theme => ({
 });
 
 function getSteps() {
-    return ['Terminal/Shell', 'IDE/Editor', 'Language', 'Dev Tools'];
+    return ['Terminal/Shell', 'IDE/Editor', 'Languages', 'Tools/Databases'];
 }
 
 function getStepContent(step) {
@@ -64,9 +69,9 @@ function getStepContent(step) {
         case 1:
             return 'IDE/Editor';
         case 2:
-            return 'Language';
+            return 'Languages';
         case 3  :
-            return 'Dev Tools';
+            return 'Tools/Databases';
     }
 }
 
@@ -141,68 +146,79 @@ class Main extends React.Component {
   
       return (
         <Router>
-        <div className="main">
-
-        {/* My Routes w/ their Components */}
-        <Route path="/" exact component={Landing} />
-        <Route path="/form/download" exact component={Download} />
-
-        {/* Stepper Component */}
-        <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep}>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
-                {label}
-              </StepButton>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {this.allStepsCompleted() ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+          <div className="main">
+            {/* Routes w/ their Components */}
+            <Route path="/" exact component={Landing} />
+            <Route path="/form" exact component={Form} />
+            <Route path="/form/download" exact component={Download} />
+      
+            {/* Stepper Component */}
+            <div className={classes.root}>
+              <Stepper nonLinear activeStep={activeStep}>
+                {steps.map((label, index) => (
+                  <Step key={label}>
+                    <StepButton
+                      onClick={this.handleStep(index)}
+                      completed={this.state.completed[index]}
+                    >
+                      {label}
+                    </StepButton>
+                  </Step>
+                ))}
+              </Stepper>
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.button}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                  className={classes.button}
-                >
-                  Next
-                </Button>
-                {activeStep !== steps.length &&
-                  (this.state.completed[this.state.activeStep] ? (
-                    <Typography variant="caption" className={classes.completed}>
-                      Step {activeStep + 1} already completed
+                {this.allStepsCompleted() ? (
+                  <div>
+                    <Typography className={classes.instructions}>
+                      All steps completed - you&apos;re finished
                     </Typography>
-                  ) : (
-                    <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                      {this.completedSteps() === this.totalSteps() - 1 ? 'Finish' : 'Complete Step'}
-                    </Button>
-                  ))}
+                    <Button onClick={this.handleReset}>Reset</Button>
+                  </div>
+                ) : (
+                  <div>
+                    <Typography className={classes.instructions}>
+                      {getStepContent(activeStep)}
+                    </Typography>
+                    <div>
+                      <Button
+                        disabled={activeStep === 0}
+                        onClick={this.handleBack}
+                        className={classes.button}
+                      >
+                        Back
+                      </Button>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleNext}
+                        className={classes.button}
+                      >
+                        Next
+                      </Button>
+                      {activeStep !== steps.length &&
+                        (this.state.completed[this.state.activeStep] ? (
+                          <Typography variant="caption" className={classes.completed}>
+                            Step {activeStep + 1} already completed
+                          </Typography>
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleComplete}
+                          >
+                            {this.completedSteps() === this.totalSteps() - 1
+                              ? "Finish"
+                              : "Complete Step"}
+                          </Button>
+                        ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
-      </div>
-        </div>
+          </div>
         </Router>
-      );
+      );      
     }
   }
 
