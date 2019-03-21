@@ -35,8 +35,15 @@ function Form(props) {
                   // check if step one
                   // render shell options
                   step === 1
-    ? installOptions.shells.map(opt => <div><input type="radio" name="Shell" value="Zsh"></input>{ opt }<br></br></div>)
-    : null
+                    ? installOptions.shells.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br></br></div>)
+                    : null
+                }
+                {
+                  // check if step one
+                  // render shell options
+                  step === 2
+                    ? installOptions.editors.map(opt => <div><input type="radio" name="editors" value={ opt }></input>{ opt }<br></br></div>)
+                    : null
                 }
             {/* <input type="radio" name="{property passed}" value="{again}"> {again}<br> */}
             </div>
