@@ -31,7 +31,7 @@ function Form(props) {
             <h3>Description goes here...</h3>
             {
                 step === 1 // if form is step 1
-                ? installOptions.shells.map(option => <input type="radio" name="Shell" value="zsh"></input>{ option }<br/> )
+                    ? installOptions.shells.map(option => <div><input type="radio" name="Shell" value="zsh"></input>{ option }<br/></div> )
                 : null
             }
             <div className = "options">
