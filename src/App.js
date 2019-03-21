@@ -12,7 +12,14 @@ class App extends Component {
           <Route
             path="/"
             exact
-            render={() => <Landing /> }
+            render={() => {
+              return (
+                <div className="main">
+                  <Main />
+                </div>
+              )
+              
+            }}
           />
 
           <Route
