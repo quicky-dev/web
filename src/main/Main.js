@@ -1,8 +1,6 @@
 import React from 'react';
-import Landing from '../landing/Landing'
-import Download from '../download/Download'
 import './Main.css'
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Horizontal Linear Stepper
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -63,6 +61,13 @@ class Main extends React.Component {
         'languages': [],
         'tools': [],
       },
+      completed: {
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+      },
     };
   }
 
@@ -98,7 +103,9 @@ class Main extends React.Component {
 
   handleComplete = () => {
     const { completed } = this.state;
-    completed[this.state.activeStep] = true;
+    const { step } = this.props;
+
+    completed[step] = true;
     this.setState({
       completed,
     });
@@ -107,7 +114,6 @@ class Main extends React.Component {
 
   handleReset = () => {
     this.setState({
-      activeStep: 0,
       completed: {},
     });
   };
@@ -127,24 +133,23 @@ class Main extends React.Component {
     render() {
       const { classes, step } = this.props;
       const steps = getSteps();
-      const { activeStep } = this.state;
-  
+      const nextStep = `/form/${parseInt(step, 10) + 1}`;
+      const prevStep = `/form/${step - 1}`;
+    
       return (
-        <Router>
         <div className="main">
 
-        {/* My Routes w/ their Components */}
-        {/* <Route path="/" exact component={Landing} />
-        <Route path="/form/download" exact component={Download} /> */}
         <Form step={step} />
         {/* Stepper Component */}
         <div className={classes.root}>
-        <Stepper nonLinear activeStep={activeStep}>
+        <Stepper nonLinear activeStep={step}>
           {steps.map((label, index) => (
             <Step key={label}>
-              <StepButton onClick={this.handleStep(index)} completed={this.state.completed[index]}>
-                {label}
-              </StepButton>
+              <Link to={`/form/${index +  1}`} style={{ textDecoration: 'none' }}>
+                <StepButton>
+                  {label}
+                </StepButton>
+              </Link>
             </Step>
           ))}
         </Stepper>
@@ -158,27 +163,26 @@ class Main extends React.Component {
             </div>
           ) : (
             <div>
-              <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
+              <Typography className={classes.instructions}>{getStepContent(step)}</Typography>
               <div>
-                <Button
-                  disabled={activeStep === 0}
-                  onClick={this.handleBack}
-                  className={classes.button}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={this.handleNext}
-                  className={classes.button}
-                >
-                  Next
-                </Button>
-                {activeStep !== steps.length &&
-                  (this.state.completed[this.state.activeStep] ? (
+                <Link to={prevStep}>
+                  <Button className={classes.button}>
+                    Back
+                  </Button>
+                </Link>
+                <Link to={nextStep}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                  >
+                    Next
+                  </Button>
+                </Link>
+                {step !== steps.length &&
+                  (this.state.completed[step] ? (
                     <Typography variant="caption" className={classes.completed}>
-                      Step {activeStep + 1} already completed
+                      Step { step } already completed
                     </Typography>
                   ) : (
                     <Button variant="contained" color="primary" onClick={this.handleComplete}>
@@ -191,7 +195,6 @@ class Main extends React.Component {
         </div>
       </div>
         </div>
-        </Router>
       );
     }
   }
