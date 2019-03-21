@@ -18,3 +18,8 @@ pre code {
     display: flex;
     flex-direction: column;
 }
+
+.dl-page {
+  text-align: center;
+  
+}

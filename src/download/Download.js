@@ -14,10 +14,10 @@ const styles = theme => ({
     },
   });
 
-function Landing(props) {
+function Download(props) {
     const { classes } = props;
     return (
-    <div className="Landing">
+    <div className="dl-page">
         <div className="Download">
             <img id="dl-logo" src={logo} className="App-logo" alt="logo" />
             <br></br>
@@ -44,8 +44,8 @@ function Landing(props) {
     )
 }
 
-Landing.propTypes = {
+Download.propTypes = {
     classes: PropTypes.object.isRequired,
   };
 
-export default withStyles(styles)(Landing)
+export default withStyles(styles)(Download)
