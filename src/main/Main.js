@@ -10,31 +10,9 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepButton from '@material-ui/core/StepButton';
 import Button from '@material-ui/core/Button';
+import Form from '../form/Form';
 import Typography from '@material-ui/core/Typography';
 
-function LandingPage() {
-    
-}
-
-function TerminalPage() {
-
-}
-
-function EditorPage() {
-
-}
-
-function LanguagePage() {
-
-}
-
-function ToolPage() {
-
-}
-
-function DownloadPage() {
-
-}
 
 // Stepper Styling
 const styles = theme => ({
@@ -59,7 +37,7 @@ function getSteps() {
 
 function getStepContent(step) {
     switch (step) {
-        case 0:
+        default:
             return 'Terminal/Shell';
         case 1:
             return 'IDE/Editor';
@@ -71,10 +49,22 @@ function getStepContent(step) {
 }
 
 class Main extends React.Component {
-  state = {
-    activeStep: 0,
-    completed: {},
-  }; 
+  static propTypes = {
+    step: PropTypes.number.isRequired,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      installRequest: {
+        'shells': [],
+        'terminals': [],
+        'editors': [],
+        'languages': [],
+        'tools': [],
+      },
+    };
+  }
 
   totalSteps = () => getSteps().length;
 
@@ -135,7 +125,7 @@ class Main extends React.Component {
   }
   
     render() {
-      const { classes } = this.props;
+      const { classes, step } = this.props;
       const steps = getSteps();
       const { activeStep } = this.state;
   
@@ -144,9 +134,9 @@ class Main extends React.Component {
         <div className="main">
 
         {/* My Routes w/ their Components */}
-        <Route path="/" exact component={Landing} />
-        <Route path="/form/download" exact component={Download} />
-
+        {/* <Route path="/" exact component={Landing} />
+        <Route path="/form/download" exact component={Download} /> */}
+        <Form step={step} />
         {/* Stepper Component */}
         <div className={classes.root}>
         <Stepper nonLinear activeStep={activeStep}>
