@@ -24,28 +24,15 @@ const installOptions = {
 };
  
 function Form(props) {
-    const { classes, step } = props;
+    const { itemsObj, classes, step } = props;
     return (
         <div className='form-page'>
-            <h1>Title</h1>
-            <h3>Description goes here...</h3>
+            <h1>{itemsObj.currentCategory}</h1>
+            <h3>{itemsObj.currentDesc}</h3>
             <div className = "options">
-                {/* This is just place holder for styling/proof of concept */}
                 {
-                  // check if step one
-                  // render shell options
-                  step === 1
-                    ? installOptions.shells.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br></br></div>)
-                    : null
+                   itemsObj.currentItems.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br /></div>)
                 }
-                {
-                  // check if step one
-                  // render shell options
-                  step === 2
-                    ? installOptions.editors.map(opt => <div><input type="radio" name="editors" value={ opt }></input>{ opt }<br></br></div>)
-                    : null
-                }
-            {/* <input type="radio" name="{property passed}" value="{again}"> {again}<br> */}
             </div>
         </div>
     )
