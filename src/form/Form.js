@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Form.css';
-import { withStyles, Radio } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 
 
 const styles = theme => ({
@@ -17,39 +17,23 @@ const styles = theme => ({
 // should probably put this is state.
 // will later be handled with backend request
 // object that holds info for checkboxes (not all correct right now)
-const installOptions = {
-    'editors': ['vim', 'vscode', 'emacs'],
-    'shells': ['zsh', 'fish'],
-    'languages': ['python', 'node', 'go'],
-};
+// const installOptions = {
+//     'editors': ['vim', 'vscode', 'emacs'],
+//     'shells': ['zsh', 'fish'],
+//     'languages': ['python', 'node', 'go'],
+// };
  
 function Form(props) {
-    const { classes, step } = props;
+    // eslint-disable-next-line
+    const { itemsObj, classes, step } = props;
     return (
         <div className='form-page'>
-            <h1>Title</h1>
-            <h3>Description goes here...</h3>
-            {
-                step === 1 // if form is step 1
-                    ? installOptions.shells.map(option => <div><input type="radio" name="Shell" value="zsh"></input>{ option }<br/></div> )
-                : null
-            }
+            <h1>{itemsObj.currentCategory}</h1>
+            <h3>{itemsObj.currentDesc}</h3>
             <div className = "options">
-                {/* This is just place holder for styling/proof of concept */}
-                <input type="radio" name="Shell" value="Zsh"></input>Zsh<br></br>
-                <input type="radio" name="Shell" value="Fish"></input>Fish<br></br>
-                <input type="radio" name="Shell" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-            {/* <input type="radio" name="{property passed}" value="{again}"> {again}<br> */}
+                {
+                   itemsObj.currentItems.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br /></div>)
+                }
             </div>
         </div>
     )
