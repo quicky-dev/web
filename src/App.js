@@ -3,7 +3,6 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import Main from './main/Main';
 import Landing from './landing/Landing';
-import Form from './form/Form';
 
 class App extends Component {
   render() {
@@ -41,5 +40,7 @@ class App extends Component {
     );
   }
 }
+
+
 
 export default App;
