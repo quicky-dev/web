@@ -48,6 +48,7 @@ class Main extends React.Component {
       completed: {},
       isLoading: true,
     };
+    this.submitForm = this.submitForm.bind(this);
     this.setupItems = this.setupItems.bind(this);
   }
 
@@ -122,6 +123,17 @@ class Main extends React.Component {
 
   allStepsCompleted() {
     return this.completedSteps() === this.state.availableItems.length;
+  }
+
+  // sends global items store to api to genearte script  
+  // TODO: make sure form is done before completing
+  submitForm = async () => {
+    const { items } = this.props;
+    // posts items to api
+    const res = await Axios.post('/api/custom', items);
+   //NOTE: incomplete, waiting on setup script as response 
+    // eslint-disable-next-line no-console
+    console.log(res);
   }
 
   render() {
@@ -199,6 +211,18 @@ class Main extends React.Component {
                   </div>
                 </div>
               )}
+              {
+                this.state.step === (Object.keys(this.state.availableItems).length - 1)
+                ? (<Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={() => this.submitForm()}
+                    >
+                      Submit
+                  </Button>)
+                : null
+              }
           </div>
         </div>
       </div>
