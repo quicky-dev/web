@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
 
-import { itemsAdd, itemsRemove, itemsSet } from "../actions/items";
+import { itemsBeenSet } from "../actions/items";
 import { connect } from 'react-redux';
 import Axios from 'axios';
 
@@ -41,56 +41,54 @@ class Main extends React.Component {
 
   constructor(props) {
     super(props);
-      this.state = {
-          step: 0,
-          availableItems: {},
-          currentCategory: "",
-          completed: {},
-          isLoading: true,
-      }
+    this.state = {
+      step: 0,
+      availableItems: {},
+      currentCategory: "",
+      completed: {},
+      isLoading: true,
+    }
 
   }
 
-    async componentDidMount() {
-        try {
-            const res = await Axios.get('/api/availableItems');
-            const availableItems = res.data;
+  async componentDidMount() {
+    try {
+      const res = await Axios.get('/api/availableItems');
+      const availableItems = res.data;
 
-            const categories = Object.keys(availableItems);
-            console.log(categories)
+      const categories = Object.keys(availableItems);
 
-            const items = {}
-            const completed = {}
-            for(let i = 0; i < categories.length; i += 1) {
-                items[categories[i]] = [];
-                completed[i] = false
-            }
+      const items = {}
+      const completed = {}
+      for (let i = 0; i < categories.length; i += 1) {
+        items[categories[i]] = [];
+        completed[i] = false
+      }
 
-            const currentCategory = categories[0]
+      const currentCategory = categories[0]
 
-            await this.setState({
-                availableItems,
-                categories,
-                currentCategory,
-                completed,
-                isLoading: false
-            })
+      await this.setState({
+        availableItems,
+        categories,
+        currentCategory,
+        completed,
+        isLoading: false
+      })
 
-            this.props.itemsSet(items);
-        } catch (err) {
-            // eslint-disable-next-line
-            console.log(err);
-        }
-   
+      this.props.dispatch(itemsBeenSet(items));
+    } catch (err) {
+      // eslint-disable-next-line
+      console.log(err);
     }
+  }
 
   handleStep = step => {
-      if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
-          return
-      }
+    if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
+      return
+    }
     this.setState({
-        step: this.state.step + step,
-        currentCategory:  this.state.categories[this.state.step + step],
+      step: this.state.step + step,
+      currentCategory: this.state.categories[this.state.step + step],
     });
   };
 
@@ -123,98 +121,89 @@ class Main extends React.Component {
     return this.completedSteps() === this.state.availableItems.length;
   }
 
-    render() {
-        if (this.state.isLoading === true) {
-            console.log("here")
-            return (<h1>Loading</h1>)
-        }
-      const { classes, step } = this.props;
-      const steps = this.state.availableItems.length;
-      const availableItems = this.state.availableItems;
-        console.log(availableItems)
-        const itemsObj = {
-            currentCategory: this.state.currentCategory,
-            currentDesc: availableItems[this.state.currentCategory].Description,
-            currentItems: availableItems[this.state.currentCategory].Items || ["dummy"],
-        }
+  render() {
+    if (this.state.isLoading === true) {
+      return (<h1>Loading</h1>)
+    }
 
-      return (
-        <div className="main">
+    const { classes, step } = this.props;
+    const steps = this.state.availableItems.length;
+    const availableItems = this.state.availableItems;
+    const itemsObj = {
+      currentCategory: this.state.currentCategory,
+      currentDesc: availableItems[this.state.currentCategory].Description,
+      currentItems: availableItems[this.state.currentCategory].Items || ["dummy"],
+    }
+
+    return (
+      <div className="main">
 
         <Form itemsObj={itemsObj} {...this.props} />
         {/* Stepper Component */}
         <div className={classes.root}>
-        <Stepper nonLinear activeStep={this.state.step}>
-          {Object.keys(this.state.availableItems).map((label, index) => (
-              <Step key={label} onClick={() => this.setState({step: index, currentCategory: this.state.categories[index]})}>
-                <StepButton onClick={() => this.setState({step: index})}>
+          <Stepper nonLinear activeStep={this.state.step}>
+            {Object.keys(this.state.availableItems).map((label, index) => (
+              <Step key={label} onClick={() => this.setState({ step: index, currentCategory: this.state.categories[index] })}>
+                <StepButton onClick={() => this.setState({ step: index })}>
                   {label}
                 </StepButton>
-            </Step>
-          ))}
-        </Stepper>
-        <div>
-          {this.allStepsCompleted() ? (
-            <div>
-              <Typography className={classes.instructions}>
-                All steps completed - you&apos;re finished
-              </Typography>
-              <Button onClick={this.handleReset}>Reset</Button>
-            </div>
-          ) : (
-            <div>
+              </Step>
+            ))}
+          </Stepper>
+          <div>
+            {this.allStepsCompleted() ? (
               <div>
-                    <Button 
-                        className={classes.button}
-                        onClick={() => this.handleStep(-1)}
-                    >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={() => this.handleStep(1)}
-                  >
-                    Next
-                  </Button>
-                {step !== steps &&
-                  (this.state.completed[step] ? (
-                    <Typography variant="caption" className={classes.completed}>
-                      Step { step } already completed
-                    </Typography>
-                  ) : (
-                    <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                      {this.completedSteps() === steps - 1 ? 'Finish' : 'Complete Step'}
-                    </Button>
-                  ))}
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
+              </Typography>
+                <Button onClick={this.handleReset}>Reset</Button>
               </div>
-            </div>
-          )}
+            ) : (
+                <div>
+                  <div>
+                    <Button
+                      className={classes.button}
+                      onClick={() => this.handleStep(-1)}
+                    >
+                      Back
+                  </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={() => this.handleStep(1)}
+                    >
+                      Next
+                  </Button>
+                    {step !== steps &&
+                      (this.state.completed[step] ? (
+                        <Typography variant="caption" className={classes.completed}>
+                          Step {step} already completed
+                    </Typography>
+                      ) : (
+                          <Button variant="contained" color="primary" onClick={this.handleComplete}>
+                            {this.completedSteps() === steps - 1 ? 'Finish' : 'Complete Step'}
+                          </Button>
+                        ))}
+                  </div>
+                </div>
+              )}
+          </div>
         </div>
       </div>
-        </div>
-      );
-    }
+    );
   }
+}
 
 Main.propTypes = {
-    classes: PropTypes.object,
-  };
-  
+  classes: PropTypes.object,
+};
+
 
 const mapStateToProps = (state) => {
-    return {
-        items: state.items,
-    }
+  return {
+    items: state.items,
+  }
 }
 
-const mapDispatchToProps = () => {
-    return {
-        itemsAdd,
-        itemsRemove,
-        itemsSet,
-    }
-}
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default withStyles(styles)(connect(mapStateToProps)(Main));
