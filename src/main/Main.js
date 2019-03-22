@@ -11,6 +11,9 @@ import Button from '@material-ui/core/Button';
 import Form from '../form/Form';
 import Typography from '@material-ui/core/Typography';
 
+import { itemsAdd, itemsRemove, itemsSet } from "../actions/items";
+import { connect } from 'react-redux';
+import Axios from 'axios';
 
 // Stepper Styling
 const styles = theme => ({
@@ -28,10 +31,6 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit,
   },
 });
-
-function getSteps() {
-    return ['Terminal/Shell', 'IDE/Editor', 'Language', 'Dev Tools'];
-}
 
 function getStepContent(step) {
     switch (step) {
@@ -51,53 +50,61 @@ class Main extends React.Component {
     step: PropTypes.number.isRequired,
   }
 
+
   constructor(props) {
     super(props);
-    this.state = {
-      installRequest: {
-        'shells': [],
-        'terminals': [],
-        'editors': [],
-        'languages': [],
-        'tools': [],
-      },
-      completed: {
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-      },
-    };
+      this.state = {
+          step: 0,
+          availableItems: {},
+          currentCategory: "",
+          completed: {},
+          isLoading: true,
+      }
+
   }
 
-  totalSteps = () => getSteps().length;
+    async componentDidMount() {
+        console.log("here")
+        try {
+            const res = await Axios.get('/api/availableItems');
+            const availableItems = res.data;
 
-  handleNext = () => {
-    let activeStep;
+            console.log(availableItems)
+            const categories = Object.keys(availableItems);
+            console.log(categories)
 
-    if (this.isLastStep() && !this.allStepsCompleted()) {
-      // It's the last step, but not all steps have been completed,
-      // find the first step that has been completed
-      const steps = getSteps();
-      activeStep = steps.findIndex((step, i) => !(i in this.state.completed));
-    } else {
-      activeStep = this.state.activeStep + 1;
+            const items = {}
+            const completed = {}
+            for(let i = 0; i < categories.length; i += 1) {
+                items[categories[i]] = [];
+                completed[i] = false
+            }
+
+            const currentCategory = categories[0]
+
+            await this.setState({
+                availableItems,
+                categories,
+                currentCategory,
+                completed,
+                isLoading: false
+            })
+
+            this.props.itemsSet(items);
+        } catch (err) {
+            // eslint-disable-next-line
+            console.log(err);
+        }
+   
     }
-    this.setState({
-      activeStep,
-    });
-  };
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  handleStep = step => () => {
+  handleStep = step => {
+      if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
+          return
+      }
     this.setState({
-      activeStep: step,
+        step: this.state.step + step,
+        currentCategory:  this.state.categories[this.state.step + step],
     });
   };
 
@@ -123,33 +130,40 @@ class Main extends React.Component {
   }
 
   isLastStep() {
-    return this.state.activeStep === this.totalSteps() - 1;
+    return this.state.activeStep === this.state.vailableItems.length - 1;
   }
 
   allStepsCompleted() {
-    return this.completedSteps() === this.totalSteps();
+    return this.completedSteps() === this.state.availableItems.length;
   }
-  
+
     render() {
+        if (this.state.isLoading === true) {
+            console.log("here")
+            return (<h1>Loading</h1>)
+        }
       const { classes, step } = this.props;
-      const steps = getSteps();
-      const nextStep = `/form/${parseInt(step, 10) + 1}`;
-      const prevStep = `/form/${step - 1}`;
-    
+      const steps = this.state.availableItems.length;
+      const availableItems = this.state.availableItems;
+        console.log(availableItems)
+        const itemsObj = {
+            currentCategory: this.state.currentCategory,
+            currentDesc: availableItems[this.state.currentCategory].Description,
+            currentItems: availableItems[this.state.currentCategory].Items || ["dummy"],
+        }
+
       return (
         <div className="main">
 
-        <Form step={step} />
+        <Form itemsObj={itemsObj} {...this.props} />
         {/* Stepper Component */}
         <div className={classes.root}>
-        <Stepper nonLinear activeStep={step}>
-          {steps.map((label, index) => (
-            <Step key={label}>
-              <Link to={`/form/${index +  1}`} style={{ textDecoration: 'none' }}>
-                <StepButton>
+        <Stepper nonLinear activeStep={this.state.step}>
+          {Object.keys(this.state.availableItems).map((label, index) => (
+              <Step key={label} onClick={() => this.setState({step: index, currentCategory: this.state.categories[index]})}>
+                <StepButton onClick={() => this.setState({step: index})}>
                   {label}
                 </StepButton>
-              </Link>
             </Step>
           ))}
         </Stepper>
@@ -165,28 +179,28 @@ class Main extends React.Component {
             <div>
               <Typography className={classes.instructions}>{getStepContent(step)}</Typography>
               <div>
-                <Link to={prevStep}>
-                  <Button className={classes.button}>
+                    <Button 
+                        className={classes.button}
+                        onClick={() => this.handleStep(-1)}
+                    >
                     Back
                   </Button>
-                </Link>
-                <Link to={nextStep}>
                   <Button
                     variant="contained"
                     color="primary"
                     className={classes.button}
+                    onClick={() => this.handleStep(1)}
                   >
                     Next
                   </Button>
-                </Link>
-                {step !== steps.length &&
+                {step !== steps &&
                   (this.state.completed[step] ? (
                     <Typography variant="caption" className={classes.completed}>
                       Step { step } already completed
                     </Typography>
                   ) : (
                     <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                      {this.completedSteps() === this.totalSteps() - 1 ? 'Finish' : 'Complete Step'}
+                      {this.completedSteps() === steps - 1 ? 'Finish' : 'Complete Step'}
                     </Button>
                   ))}
               </div>
@@ -204,4 +218,18 @@ Main.propTypes = {
   };
   
 
-export default withStyles(styles)(Main);
+const mapStateToProps = (state) => {
+    return {
+        items: state.items,
+    }
+}
+
+const mapDispatchToProps = () => {
+    return {
+        itemsAdd,
+        itemsRemove,
+        itemsSet,
+    }
+}
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps())(Main));
