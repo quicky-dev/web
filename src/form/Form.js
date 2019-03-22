@@ -15,27 +15,15 @@ const styles = theme => ({
 });
  
 function Form(props) {
-    const { classes } = props;
+    const { itemsObj, classes, step } = props;
     return (
         <div className='form-page'>
-            <h1>Title</h1>
-            <h3>Description goes here...</h3>
+            <h1>{itemsObj.currentCategory}</h1>
+            <h3>{itemsObj.currentDesc}</h3>
             <div className = "options">
-                {/* This is just place holder for styling/proof of concept */}
-                <input type="radio" name="Shell" value="Zsh"></input>Zsh<br></br>
-                <input type="radio" name="Shell" value="Fish"></input>Fish<br></br>
-                <input type="radio" name="Shell" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-                <input type="radio" name="Vim" value="Vim"></input>Vim<br></br>
-            {/* <input type="radio" name="{property passed}" value="{again}"> {again}<br> */}
+                {
+                   itemsObj.currentItems.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br /></div>)
+                }
             </div>
         </div>
     )

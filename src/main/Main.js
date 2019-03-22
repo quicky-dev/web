@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-// Components
-import Landing from '../landing/Landing';
 import Download from '../download/Download';
 import Form from '../form/Form';
-// CSS 
-import './Main.css'
-// React Router
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './Main.css'
 // Horizontal Linear Stepper
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,30 +12,10 @@ import StepButton from '@material-ui/core/StepButton';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-// React Router --> Functions for Each Page
-function LandingPage() {
-    
-}
 
-function TermShellPage() {
-
-}
-
-function EditorPage() {
-
-}
-
-function LanguagePage() {
-
-}
-
-function ToolDbPage() {
-
-}
-
-function DownloadPage() {
-
-}
+import { itemsAdd, itemsRemove, itemsSet } from "../actions/items";
+import { connect } from 'react-redux';
+import Axios from 'axios';
 
 // Stepper Styling
 const styles = theme => ({
@@ -58,62 +34,74 @@ const styles = theme => ({
   },
 });
 
-function getSteps() {
-    return ['Terminal/Shell', 'IDE/Editor', 'Languages', 'Tools/Databases'];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return 'Terminal/Shell';
-        case 1:
-            return 'IDE/Editor';
-        case 2:
-            return 'Languages';
-        case 3  :
-            return 'Tools/Databases';
-    }
-}
-
 class Main extends React.Component {
-  state = {
-    activeStep: 0,
-    completed: {},
-  }; 
+  static propTypes = {
+    step: PropTypes.number.isRequired,
+  }
 
-  totalSteps = () => getSteps().length;
 
-  handleNext = () => {
-    let activeStep;
+  constructor(props) {
+    super(props);
+      this.state = {
+          step: 0,
+          availableItems: {},
+          currentCategory: "",
+          completed: {},
+          isLoading: true,
+      }
 
-    if (this.isLastStep() && !this.allStepsCompleted()) {
-      // It's the last step, but not all steps have been completed,
-      // find the first step that has been completed
-      const steps = getSteps();
-      activeStep = steps.findIndex((step, i) => !(i in this.state.completed));
-    } else {
-      activeStep = this.state.activeStep + 1;
+  }
+
+    async componentDidMount() {
+        console.log("here")
+        try {
+            const res = await Axios.get('/api/availableItems');
+            const availableItems = res.data;
+
+            console.log(availableItems)
+            const categories = Object.keys(availableItems);
+            console.log(categories)
+
+            const items = {}
+            const completed = {}
+            for(let i = 0; i < categories.length; i += 1) {
+                items[categories[i]] = [];
+                completed[i] = false
+            }
+
+            const currentCategory = categories[0]
+
+            await this.setState({
+                availableItems,
+                categories,
+                currentCategory,
+                completed,
+                isLoading: false
+            })
+
+            this.props.itemsSet(items);
+        } catch (err) {
+            // eslint-disable-next-line
+            console.log(err);
+        }
+   
     }
-    this.setState({
-      activeStep,
-    });
-  };
 
-  handleBack = () => {
-    this.setState(state => ({
-      activeStep: state.activeStep - 1,
-    }));
-  };
-
-  handleStep = step => () => {
+  handleStep = step => {
+      if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
+          return
+      }
     this.setState({
-      activeStep: step,
+        step: this.state.step + step,
+        currentCategory:  this.state.categories[this.state.step + step],
     });
   };
 
   handleComplete = () => {
     const { completed } = this.state;
-    completed[this.state.activeStep] = true;
+    const { step } = this.props;
+
+    completed[step] = true;
     this.setState({
       completed,
     });
@@ -122,7 +110,6 @@ class Main extends React.Component {
 
   handleReset = () => {
     this.setState({
-      activeStep: 0,
       completed: {},
     });
   };
@@ -132,93 +119,85 @@ class Main extends React.Component {
   }
 
   isLastStep() {
-    return this.state.activeStep === this.totalSteps() - 1;
+    return this.state.activeStep === this.state.vailableItems.length - 1;
   }
 
   allStepsCompleted() {
-    return this.completedSteps() === this.totalSteps();
+    return this.completedSteps() === this.state.availableItems.length;
   }
-  
+
     render() {
-      const { classes } = this.props;
-      const steps = getSteps();
-      const { activeStep } = this.state;
-  
+        if (this.state.isLoading === true) {
+            console.log("here")
+            return (<h1>Loading</h1>)
+        }
+      const { classes, step } = this.props;
+      const steps = this.state.availableItems.length;
+      const availableItems = this.state.availableItems;
+        console.log(availableItems)
+        const itemsObj = {
+            currentCategory: this.state.currentCategory,
+            currentDesc: availableItems[this.state.currentCategory].Description,
+            currentItems: availableItems[this.state.currentCategory].Items || ["dummy"],
+        }
+
       return (
-        <Router>
-          <div className="main">
-            {/* Routes w/ their Components */}
-            <Route path="/" exact component={Landing} />
-            <Route path="/form" exact component={Form} />
-            <Route path="/form/download" exact component={Download} />
-      
-            {/* Stepper Component */}
-            <div className={classes.root}>
-              <Stepper nonLinear activeStep={activeStep}>
-                {steps.map((label, index) => (
-                  <Step key={label}>
-                    <StepButton
-                      onClick={this.handleStep(index)}
-                      completed={this.state.completed[index]}
-                    >
-                      {label}
-                    </StepButton>
-                  </Step>
-                ))}
-              </Stepper>
+        <div className="main">
+
+        <Form itemsObj={itemsObj} {...this.props} />
+        {/* Stepper Component */}
+        <div className={classes.root}>
+        <Stepper nonLinear activeStep={this.state.step}>
+          {Object.keys(this.state.availableItems).map((label, index) => (
+              <Step key={label} onClick={() => this.setState({step: index, currentCategory: this.state.categories[index]})}>
+                <StepButton onClick={() => this.setState({step: index})}>
+                  {label}
+                </StepButton>
+            </Step>
+          ))}
+        </Stepper>
+        <div>
+          {this.allStepsCompleted() ? (
+            <div>
+              <Typography className={classes.instructions}>
+                All steps completed - you&apos;re finished
+              </Typography>
+              <Button onClick={this.handleReset}>Reset</Button>
+            </div>
+          ) : (
+            <div>
               <div>
-                {this.allStepsCompleted() ? (
-                  <div>
-                    <Typography className={classes.instructions}>
-                      All steps completed - you&apos;re finished
-                    </Typography>
-                    <Button onClick={this.handleReset}>Reset</Button>
-                  </div>
-                ) : (
-                  <div>
-                    <Typography className={classes.instructions}>
-                      {getStepContent(activeStep)}
-                    </Typography>
-                    <div>
-                      <Button
-                        disabled={activeStep === 0}
-                        onClick={this.handleBack}
+                    <Button 
                         className={classes.button}
-                      >
-                        Back
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleNext}
-                        className={classes.button}
-                      >
-                        Next
-                      </Button>
-                      {activeStep !== steps.length &&
-                        (this.state.completed[this.state.activeStep] ? (
-                          <Typography variant="caption" className={classes.completed}>
-                            Step {activeStep + 1} already completed
-                          </Typography>
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleComplete}
-                          >
-                            {this.completedSteps() === this.totalSteps() - 1
-                              ? "Finish"
-                              : "Complete Step"}
-                          </Button>
-                        ))}
-                    </div>
-                  </div>
-                )}
+                        onClick={() => this.handleStep(-1)}
+                    >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => this.handleStep(1)}
+                  >
+                    Next
+                  </Button>
+                {step !== steps &&
+                  (this.state.completed[step] ? (
+                    <Typography variant="caption" className={classes.completed}>
+                      Step { step } already completed
+                    </Typography>
+                  ) : (
+                    <Button variant="contained" color="primary" onClick={this.handleComplete}>
+                      {this.completedSteps() === steps - 1 ? 'Finish' : 'Complete Step'}
+                    </Button>
+                  ))}
               </div>
             </div>
-          </div>
-        </Router>
-      );      
+          )}
+        </div>
+      </div>
+        </div>
+      );
     }
   }
 
@@ -227,4 +206,18 @@ Main.propTypes = {
   };
   
 
-export default withStyles(styles)(Main);
+const mapStateToProps = (state) => {
+    return {
+        items: state.items,
+    }
+}
+
+const mapDispatchToProps = () => {
+    return {
+        itemsAdd,
+        itemsRemove,
+        itemsSet,
+    }
+}
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps())(Main));
