@@ -14,7 +14,5 @@ export default function itemsReducer(state = null, action) {
         default:
             break;
     }
-    // eslint-disable-next-line no-console
-    console.log('Reducer State: ', state);
     return state;
 }
