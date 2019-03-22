@@ -14,15 +14,6 @@ const styles = theme => ({
     },
 });
 
-// should probably put this is state.
-// will later be handled with backend request
-// object that holds info for checkboxes (not all correct right now)
-// const installOptions = {
-//     'editors': ['vim', 'vscode', 'emacs'],
-//     'shells': ['zsh', 'fish'],
-//     'languages': ['python', 'node', 'go'],
-// };
- 
 function Form(props) {
     // eslint-disable-next-line
     const { itemsObj, classes, step } = props;
@@ -32,7 +23,9 @@ function Form(props) {
             <h3>{itemsObj.currentDesc}</h3>
             <div className = "options">
                 {
-                   itemsObj.currentItems.map(opt => <div><input type="radio" name="shells" value={ opt }></input>{ opt }<br /></div>)
+                    itemsObj.currentCategory !== 'Shells'
+                        ? itemsObj.currentItems.map(opt => <div><input type="checkbox" name={itemsObj.currentCategory} value={ opt }></input>{ opt }<br /></div>)
+                        : itemsObj.currentItems.map(opt => <div><input type="radio" name={itemsObj.currentCategory} value={ opt }></input>{ opt }<br /></div>)
                 }
             </div>
         </div>
