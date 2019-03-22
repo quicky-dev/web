@@ -23,7 +23,7 @@ class App extends Component {
           />
 
           <Route
-            path="/form/:step"
+            path="/form"
             exact
             render={({ match }) => {
               // step from url param 
