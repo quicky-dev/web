@@ -52,12 +52,10 @@ class Main extends React.Component {
   }
 
     async componentDidMount() {
-        console.log("here")
         try {
             const res = await Axios.get('/api/availableItems');
             const availableItems = res.data;
 
-            console.log(availableItems)
             const categories = Object.keys(availableItems);
             console.log(categories)
 
@@ -219,4 +217,4 @@ const mapDispatchToProps = () => {
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps())(Main));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Main));
