@@ -47,12 +47,17 @@ class Main extends React.Component {
       currentCategory: "",
       completed: {},
       isLoading: true,
-    }
-
+    };
+    this.setupItems = this.setupItems.bind(this);
   }
 
   async componentDidMount() {
-    try {
+    await this.setupItems()
+    
+  }
+
+  setupItems = async () => {
+   try {
       const res = await Axios.get('/api/availableItems');
       const availableItems = res.data;
 
@@ -79,8 +84,8 @@ class Main extends React.Component {
     } catch (err) {
       // eslint-disable-next-line
       console.log(err);
-    }
-  }
+    }  
+  }  
 
   handleStep = step => {
     if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
@@ -103,10 +108,8 @@ class Main extends React.Component {
     this.handleNext();
   };
 
-  handleReset = () => {
-    this.setState({
-      completed: {},
-    });
+  handleReset = async () => {
+    await this.setupItems();
   };
 
   completedSteps() {
@@ -175,6 +178,14 @@ class Main extends React.Component {
                     >
                       Next
                   </Button>
+                  <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      onClick={() => this.handleReset()}
+                    >
+                      Reset
+                    </Button>
                     {step !== steps &&
                       (this.state.completed[step] ? (
                         <Typography variant="caption" className={classes.completed}>
