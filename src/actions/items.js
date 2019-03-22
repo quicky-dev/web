@@ -40,6 +40,7 @@ export function itemsRemove(items, category, item) {
     }
 }
 
+// not sure if we need this function anymore
 export function itemsSet(items) {
     return (dispatch) => dispatch(itemsBeenSet(items));
 }
