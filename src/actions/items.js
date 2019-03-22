@@ -26,7 +26,7 @@ export function itemsBeenSet(items) {
 export function itemsAdd(items, category, item) {
    return dispatch => {
        items[category].push(item)
-       dispatch(itemAdded(items))
+       dispatch(itemAdded(items));
    }
 }
 
@@ -36,10 +36,10 @@ export function itemsRemove(items, category, item) {
         const indexOfItem = selectedCategory.indexOf(item)
         items[category].pop(indexOfItem)
 
-        dispatch(itemAdded(items))
+        dispatch(itemRemoved(items));
     }
 }
 
 export function itemsSet(items) {
-    return dispatch => dispatch(itemsBeenSet(items));
+    return (dispatch) => dispatch(itemsBeenSet(items));
 }
