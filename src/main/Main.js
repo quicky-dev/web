@@ -109,9 +109,19 @@ class Main extends React.Component {
     this.handleNext();
   };
 
+  // when form is reset, resets the global items property and unchecks all checkboxes
   handleReset = async () => {
-    await this.setupItems();
-  };
+    try {
+      // currently this will reset the checkboxes
+      // this is hacky implementation and needs to be updatted
+      window.location.reload();
+      // resetup all the items(clears the items store)
+      await this.setupItems();
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log('There was an error resetting the form: ', err);
+    }
+    };
 
   completedSteps() {
     return Object.keys(this.state.completed).length;
@@ -126,14 +136,10 @@ class Main extends React.Component {
   }
 
   // sends global items store to api to genearte script  
-  // TODO: make sure form is done before completing
   submitForm = async () => {
     const { items } = this.props;
     // posts items to api
-    const res = await Axios.post('/api/custom', items);
-   //NOTE: incomplete, waiting on setup script as response 
-    // eslint-disable-next-line no-console
-    console.log(res);
+    await Axios.post('/api/dynamic', items);
   }
 
   render() {
@@ -153,7 +159,7 @@ class Main extends React.Component {
     return (
       <div className="main">
 
-        <Form itemsObj={itemsObj} {...this.props} />
+        <Form itemsObj={itemsObj} resetBoxes={this.resetBoxes} {...this.props} reset={this.state.reset} />
         {/* Stepper Component */}
         <div className={classes.root}>
           <Stepper nonLinear activeStep={this.state.step}>

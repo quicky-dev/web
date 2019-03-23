@@ -39,6 +39,7 @@ class Form extends Component {
             this.props.dispatch(itemsRemove(this.props.items, itemsObj.currentCategory, item.value));
         }
     };
+
     // makes so users can only check one option when choosing a shell
     handleSelectShell = (e) => {
         const { itemsObj } = this.props;
