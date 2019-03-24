@@ -137,9 +137,13 @@ class Main extends React.Component {
 
   // sends global items store to api to genearte script  
   submitForm = async () => {
-    const { items } = this.props;
+    const { items, history } = this.props;
     // posts items to api
-    await Axios.post('/api/dynamic', items);
+    const res = await Axios.post('/api/dynamic', items);
+    const filePath = res.data;
+    console.log('about to redirect');
+    sessionStorage.setItem('filePath', filePath);
+    history.push('/setup');
   }
 
   render() {
