@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import './App.css';
 import Main from './main/Main';
 import Landing from './landing/Landing';
+import Download from './download/Download';
 
 class App extends Component {
   render() {
@@ -25,15 +26,20 @@ class App extends Component {
           <Route
             path="/form"
             exact
-            render={({ match }) => {
-              // step from url param 
-              const { step } = match.params;
-              return (
-                <Main step={step} /> 
-              )
-            }}
+            component={ Main }
           />
 
+          <Route
+            path="/setup"
+            exact
+            render={() => {
+              return (
+                <div className="main">
+                  <Download />
+                </div>
+              )
+              }}
+          />
         </div>
       </BrowserRouter>
       
