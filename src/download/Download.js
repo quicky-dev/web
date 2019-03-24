@@ -33,7 +33,7 @@ function Download(props) {
                     <br></br>
                     3. Paste setup script into your terminal
                     <br></br>
-                bash $<FilledInput underline style={{ width: '75%' }} value={`(curl -fsSL http://quicky.dev/${sessionStorage.getItem('filePath')})`} />
+                <FilledInput underline style={{ width: '75%' }} value={`bash $(curl -fsSL http://quicky.dev/${sessionStorage.getItem('filePath')})`} />
                     <br></br><br></br>
                 </code>
             </pre>
