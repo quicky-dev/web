@@ -15,6 +15,7 @@ const styles = theme => ({
   });
 
 function Download(props) {
+    // eslint-disable-next-line
     return (
     <div className="dl-page">
         <div className="Download">
@@ -26,15 +27,18 @@ function Download(props) {
             <pre>
                 <code>
                     // Installation Instructions
-                    <br></br><br></br>
+                    <br /><br />
                     1. Copy setup script
-                    <br></br>
+                    <br />
                     2. Open your terminal
-                    <br></br>
+                    <br />
                     3. Paste setup script into your terminal
-                    <br></br>
+                    <br />
+                    5. Press enter key
+                    <br />
+                    4. Dance around and be happy
                 <FilledInput underline style={{ width: '75%' }} value={`bash $(curl -fsSL http://quicky.dev/${sessionStorage.getItem('filePath')})`} />
-                    <br></br><br></br>
+                    <br /><br />
                 </code>
             </pre>
         </div>
