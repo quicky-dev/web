@@ -41,7 +41,7 @@ function Download(props) {
                     <br />couple of times depending on what it is you chose to install, but other than that there is no
                     <br />nothing else required on your part. You can run apps as soon as they're installed
                     <br /><br />
-                    <FilledInput underline style={{ width: '75%' }} value={`bash <(curl -fsSL https://quicky-api.herokuapp.com/api/scripts/${sessionStorage.getItem('filePath')})`} />
+                    <FilledInput underline style={{ width: '75%' }} value={`bash <(curl -s https://quicky-api.herokuapp.com/api/scripts/${sessionStorage.getItem('filePath')})`} />
                     <br /><br />
                 </code>
             </pre>
