@@ -79,9 +79,8 @@ class Main extends React.Component {
         currentCategory,
         completed,
         isLoading: false
-      })
+      }, () => this.props.dispatch(itemsBeenSet(items)))
 
-      this.props.dispatch(itemsBeenSet(items));
     } catch (err) {
       // eslint-disable-next-line
       console.log(err);
