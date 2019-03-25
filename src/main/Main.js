@@ -148,7 +148,11 @@ class Main extends React.Component {
 
   render() {
     if (this.state.isLoading === true) {
-      return (<h1>Loading</h1>)
+      return (
+        <div style={{textAlign: "center"}} className="main">
+          <h1 >Loading</h1>
+        </div>
+      )
     }
 
     const { classes, step } = this.props;
