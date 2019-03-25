@@ -20,7 +20,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "deploy": "now --team quicky-dev -n quicky-dev && now --team quicky-dev alias",
-    "stage": "now --team quicky-dev -n stage-quicky-dev && now --team stage-quicky-dev alias stage-lasagna.now.sh",
+    "stage": "now --team quicky-dev -n stage-quicky-dev && now --team quicky-dev alias stage-quicky-dev.now.sh",
     "now-build": "react-scripts build"
   },
   "eslintConfig": {
