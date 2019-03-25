@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "quicky-dev",
+    "alias": "quicky-dev.now.sh",
+    "routes": [
+        {"src": "/api.*", "dest":"https://quicky-api.herokuapp.com"},
+        {"src": "/form", "dest":"/"},
+        {"src": "/setup", "dest":"/"}
+    ],
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@now/static-build",
+            "config": {"distDir": "build"}
+        }
+    ]
+}
