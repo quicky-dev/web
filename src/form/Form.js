@@ -21,7 +21,7 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedShell: "",
+            selectedShell: "fish",
             selected: {},
         };
 
