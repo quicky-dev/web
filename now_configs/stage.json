@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "quicky-dev",
-    "alias": "live-quicky-dev.now.sh",
+    "name": "stage-quicky-dev",
+    "alias": "stage-quicky-dev.now.sh",
     "routes": [
-        {"src": "/api.*", "dest":"https://quicky-api.herokuapp.com"},
+        {"src": "/api.*", "dest":"https://quicky-api-staging.herokuapp.com"},
         {"src": "/form", "dest":"/"},
         {"src": "/setup", "dest":"/"}
     ],

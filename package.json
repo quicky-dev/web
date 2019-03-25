@@ -19,8 +19,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "now --team quicky-dev -n quicky-dev && now --team quicky-dev alias",
-    "stage": "now --team quicky-dev -n stage-quicky-dev && now --team quicky-dev -n stage-quicky-dev alias stage-quicky-dev.now.sh",
+    "deploy": "cp now_configs/deploy.json now.json && now --team quicky-dev -n quicky-dev && now --team quicky-dev alias",
+    "stage": "cp now_configs/stage.json now.json && now --team quicky-dev -n stage-quicky-dev && now --team quicky-dev alias stage-quicky-dev.now.sh",
     "now-build": "react-scripts build"
   },
   "eslintConfig": {
