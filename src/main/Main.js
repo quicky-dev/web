@@ -160,6 +160,7 @@ class Main extends React.Component {
     const itemsObj = {
       currentCategory: this.state.currentCategory,
       currentDesc: availableItems[this.state.currentCategory].Description,
+      currentItems: availableItems[this.state.currentCategory].Items,
     }
 
     return (
