@@ -21,7 +21,6 @@ function Download(props) {
         <div className="Download">
             <img id="dl-logo" src={logo} className="App-logo" alt="logo" />
             <br></br>
-            <sub>Click <a href="#!">here</a> if your download does not start automatically</sub>
         </div>
         <div className="Instructions">
             <pre>
@@ -37,8 +36,8 @@ function Download(props) {
                     <br /><br />
                     4. When the GUI installer is finished, press enter in the terminal to resume the installation
                     <br /><br />
-                    5. Dance around and be happy! You may be prompted for a password a 
-                    <br />couple of times depending on what it is you chose to install, but other than that there is no
+                    5. Dance around and be happy! You may be prompted for a password a couple of times 
+                    <br />depending on what it is you chose to install, but other than that there is no
                     <br />nothing else required on your part. You can run apps as soon as they're installed
                     <br /><br />
                     <FilledInput underline style={{ width: '75%' }} value={`bash <(curl -s https://quicky-api.herokuapp.com/api/scripts/${sessionStorage.getItem('filePath')})`} />
