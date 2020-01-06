@@ -1,43 +1,41 @@
-import React from 'react';
+import React from "react";
 //import Download from '../download/Download';
-import Form from '../form/Form';
-import './Main.css'
+import Form from "../form/Form";
+import "./Main.css";
 // Horizontal Linear Stepper
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepButton from '@material-ui/core/StepButton';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepButton from "@material-ui/core/StepButton";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 import { itemsBeenSet } from "../actions/items";
-import { connect } from 'react-redux';
-import Axios from 'axios';
+import { connect } from "react-redux";
+import Axios from "axios";
 
 // Stepper Styling
 const styles = theme => ({
   root: {
-    width: '95%',
+    width: "95%"
   },
   button: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   completed: {
-    display: 'inline-block',
+    display: "inline-block"
   },
   instructions: {
     marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
-  },
+    marginBottom: theme.spacing.unit
+  }
 });
 
 class Main extends React.Component {
   static propTypes = {
-    step: PropTypes.number.isRequired,
-  }
-
+    step: PropTypes.number.isRequired
+  };
 
   constructor(props) {
     super(props);
@@ -46,32 +44,31 @@ class Main extends React.Component {
       availableItems: {},
       currentCategory: "",
       completed: {},
-      isLoading: true,
+      isLoading: true
     };
     this.submitForm = this.submitForm.bind(this);
     this.setupItems = this.setupItems.bind(this);
   }
 
   async componentDidMount() {
-    await this.setupItems()
-    
+    await this.setupItems();
   }
 
   setupItems = async () => {
-   try {
-      const res = await Axios.get('/api/availableItems');
+    try {
+      const res = await Axios.get("/api/availableItems");
       const availableItems = res.data;
 
       const categories = Object.keys(availableItems);
 
-      const items = {}
-      const completed = {}
+      const items = {};
+      const completed = {};
       for (let i = 0; i < categories.length; i += 1) {
         items[categories[i]] = [];
-        completed[i] = false
+        completed[i] = false;
       }
 
-      const currentCategory = categories[0]
+      const currentCategory = categories[0];
 
       await this.setState({
         availableItems,
@@ -79,22 +76,25 @@ class Main extends React.Component {
         currentCategory,
         completed,
         isLoading: false
-      })
+      });
 
       this.props.dispatch(itemsBeenSet(items));
     } catch (err) {
       // eslint-disable-next-line
       console.log(err);
-    }  
-  }  
+    }
+  };
 
   handleStep = step => {
-    if (this.state.step + step < 0 || this.state.step + step >= this.state.categories.length) {
-      return
+    if (
+      this.state.step + step < 0 ||
+      this.state.step + step >= this.state.categories.length
+    ) {
+      return;
     }
     this.setState({
       step: this.state.step + step,
-      currentCategory: this.state.categories[this.state.step + step],
+      currentCategory: this.state.categories[this.state.step + step]
     });
   };
 
@@ -104,7 +104,7 @@ class Main extends React.Component {
 
     completed[step] = true;
     this.setState({
-      completed,
+      completed
     });
     this.handleNext();
   };
@@ -119,9 +119,9 @@ class Main extends React.Component {
       await this.setupItems();
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log('There was an error resetting the form: ', err);
+      console.log("There was an error resetting the form: ", err);
     }
-    };
+  };
 
   completedSteps() {
     return Object.keys(this.state.completed).length;
@@ -135,20 +135,20 @@ class Main extends React.Component {
     return this.completedSteps() === this.state.availableItems.length;
   }
 
-  // sends global items store to api to genearte script  
+  // sends global items store to api to genearte script
   submitForm = async () => {
     const { items, history } = this.props;
     // posts items to api
-    const res = await Axios.post('/api/dynamic', items);
+    const res = await Axios.post("/api/dynamic", items);
     const filePath = res.data;
-    console.log('about to redirect');
-    sessionStorage.setItem('filePath', filePath);
-    history.push('/setup');
-  }
+    console.log("about to redirect");
+    sessionStorage.setItem("filePath", filePath);
+    history.push("/setup");
+  };
 
   render() {
     if (this.state.isLoading === true) {
-      return (<h1>Loading</h1>)
+      return <h1>Loading</h1>;
     }
 
     const { classes, step } = this.props;
@@ -157,17 +157,30 @@ class Main extends React.Component {
     const itemsObj = {
       currentCategory: this.state.currentCategory,
       currentDesc: availableItems[this.state.currentCategory].Description,
-    }
+      currentItems: availableItems[this.state.currentCategory].Items
+    };
 
     return (
       <div className="main">
-
-        <Form itemsObj={itemsObj} resetBoxes={this.resetBoxes} {...this.props} reset={this.state.reset} />
+        <Form
+          itemsObj={itemsObj}
+          resetBoxes={this.resetBoxes}
+          {...this.props}
+          reset={this.state.reset}
+        />
         {/* Stepper Component */}
         <div className={classes.root}>
           <Stepper nonLinear activeStep={this.state.step}>
             {Object.keys(this.state.availableItems).map((label, index) => (
-              <Step key={label} onClick={() => this.setState({ step: index, currentCategory: this.state.categories[index] })}>
+              <Step
+                key={label}
+                onClick={() =>
+                  this.setState({
+                    step: index,
+                    currentCategory: this.state.categories[index]
+                  })
+                }
+              >
                 <StepButton onClick={() => this.setState({ step: index })}>
                   {label}
                 </StepButton>
@@ -179,59 +192,67 @@ class Main extends React.Component {
               <div>
                 <Typography className={classes.instructions}>
                   All steps completed - you&apos;re finished
-              </Typography>
+                </Typography>
                 <Button onClick={this.handleReset}>Reset</Button>
               </div>
             ) : (
+              <div>
                 <div>
-                  <div>
-                    <Button
-                      className={classes.button}
-                      onClick={() => this.handleStep(-1)}
-                    >
-                      Back
-                  </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={() => this.handleStep(1)}
-                    >
-                      Next
+                  <Button
+                    className={classes.button}
+                    onClick={() => this.handleStep(-1)}
+                  >
+                    Back
                   </Button>
                   <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={() => this.handleReset()}
-                    >
-                      Reset
-                    </Button>
-                    {step !== steps &&
-                      (this.state.completed[step] ? (
-                        <Typography variant="caption" className={classes.completed}>
-                          Step {step} already completed
-                    </Typography>
-                      ) : (
-                          <Button variant="contained" color="primary" onClick={this.handleComplete}>
-                            {this.completedSteps() === steps - 1 ? 'Finish' : 'Complete Step'}
-                          </Button>
-                        ))}
-                  </div>
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => this.handleStep(1)}
+                  >
+                    Next
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => this.handleReset()}
+                  >
+                    Reset
+                  </Button>
+                  {step !== steps &&
+                    (this.state.completed[step] ? (
+                      <Typography
+                        variant="caption"
+                        className={classes.completed}
+                      >
+                        Step {step} already completed
+                      </Typography>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleComplete}
+                      >
+                        {this.completedSteps() === steps - 1
+                          ? "Finish"
+                          : "Complete Step"}
+                      </Button>
+                    ))}
                 </div>
-              )}
-              {
-                this.state.step === (Object.keys(this.state.availableItems).length - 1)
-                ? (<Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      onClick={() => this.submitForm()}
-                    >
-                      Submit
-                  </Button>)
-                : null
-              }
+              </div>
+            )}
+            {this.state.step ===
+            Object.keys(this.state.availableItems).length - 1 ? (
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                onClick={() => this.submitForm()}
+              >
+                Submit
+              </Button>
+            ) : null}
           </div>
         </div>
       </div>
@@ -240,14 +261,13 @@ class Main extends React.Component {
 }
 
 Main.propTypes = {
-  classes: PropTypes.object,
+  classes: PropTypes.object
 };
 
-
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    items: state.items,
-  }
-}
+    items: state.items
+  };
+};
 
 export default withStyles(styles)(connect(mapStateToProps)(Main));
