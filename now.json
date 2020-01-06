@@ -3,7 +3,10 @@
     "name": "quicky-dev",
     "alias": "live-quicky-dev.now.sh",
     "routes": [
-        {"src": "/api.*", "dest":"https://quicky-api.herokuapp.com"},
+        {
+            "src": "/api.*", 
+            "dest":"https://api.quicky.dev"
+        },
         {"src": "/form", "dest":"/"},
         {"src": "/setup", "dest":"/"}
     ],
