@@ -17,7 +17,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --ci",
+    "test-dev": "react-scripts test --watch",
     "eject": "react-scripts eject",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
