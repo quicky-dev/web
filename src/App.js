@@ -10,17 +10,11 @@ class App extends Component {
     return (
       <BrowserRouter>
         <div className="App">
+          
           <Route
             path="/"
             exact
-            render={() => {
-              return (
-                <div className="main">
-                  <Landing />
-                </div>
-              )
-              
-            }}
+            component={ Landing }
           />
 
           <Route
@@ -32,17 +26,11 @@ class App extends Component {
           <Route
             path="/setup"
             exact
-            render={() => {
-              return (
-                <div className="main">
-                  <Download />
-                </div>
-              )
-              }}
+            component={ Download }
           />
+
         </div>
       </BrowserRouter>
-      
     );
   }
 }
