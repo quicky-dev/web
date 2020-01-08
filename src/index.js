@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import path from "path";
 
 import reducers from "./reducers/index";
 
@@ -11,13 +10,6 @@ import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 
 import thunk from "redux-thunk";
-
-// Obtain the parent directory for any config
-const directoryAsArr = process.cwd().split("/");
-directoryAsArr.pop();
-const parentDir = directoryAsArr.join("/");
-
-// Enable environment config variables for local dev
 
 const store = createStore(reducers, applyMiddleware(thunk));
 
