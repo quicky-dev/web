@@ -56,7 +56,7 @@ class Main extends React.Component {
 
   setupItems = async () => {
     try {
-      const res = await Axios.get("/api/availableItems");
+      const res = await Axios.get("https://api.quicky.dev/api/availableItems");
       const availableItems = res.data;
 
       const categories = Object.keys(availableItems);
@@ -139,7 +139,7 @@ class Main extends React.Component {
   submitForm = async () => {
     const { items, history } = this.props;
     // posts items to api
-    const res = await Axios.post("/api/dynamic", items);
+    const res = await Axios.post("https://api.quicky.dev/api/dynamic", items);
     const filePath = res.data;
     console.log("about to redirect");
     sessionStorage.setItem("filePath", filePath);
