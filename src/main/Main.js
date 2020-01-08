@@ -1,6 +1,6 @@
 import React from "react";
 //import Download from '../download/Download';
-import Form from "../form/Form";
+import Form from "../pages/form/Form";
 import "./Main.css";
 // Horizontal Linear Stepper
 import PropTypes from "prop-types";
