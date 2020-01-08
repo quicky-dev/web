@@ -1,6 +1,6 @@
 import React from 'react';
 import './Download.css'
-import logo from '../logo.png';
+import logo from '../../logo.png';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { FilledInput } from '@material-ui/core';

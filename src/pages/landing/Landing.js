@@ -1,6 +1,6 @@
 import React from 'react';
 import './Landing.css'
-import logo from '../logo.png';
+import logo from '../../logo.png';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';

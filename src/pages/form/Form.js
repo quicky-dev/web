@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 //import Button from '@material-ui/core/Button';
 import Checkbox from "@material-ui/core/Checkbox";
-import { itemsAdd, itemsRemove } from "../actions/items";
+import { itemsAdd, itemsRemove } from "../../actions/items";
 
 const styles = theme => ({
   button: {
