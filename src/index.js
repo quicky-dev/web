@@ -1,19 +1,32 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import * as serviceWorker from "./serviceWorker";
+import path from "path";
 
-import reducers from './reducers/index';
+import reducers from "./reducers/index";
 
-import { createStore, applyMiddleware } from 'redux';
-import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from "redux";
+import { Provider } from "react-redux";
 
-import thunk from 'redux-thunk';
+import thunk from "redux-thunk";
 
-const store = createStore(reducers, applyMiddleware(thunk))
+// Obtain the parent directory for any config
+const directoryAsArr = process.cwd().split("/");
+directoryAsArr.pop();
+const parentDir = directoryAsArr.join("/");
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+// Enable environment config variables for local dev
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
