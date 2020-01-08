@@ -48,6 +48,10 @@ class Main extends React.Component {
     };
     this.submitForm = this.submitForm.bind(this);
     this.setupItems = this.setupItems.bind(this);
+    this.apiHost = process.env.REACT_APP_DEVELOPMENT_MODE
+      ? ""
+      : "https://api.quicky.dev";
+    console.log(process.env.REACT_APP_DEVELOPMENT_MODE);
   }
 
   async componentDidMount() {
@@ -56,7 +60,7 @@ class Main extends React.Component {
 
   setupItems = async () => {
     try {
-      const res = await Axios.get("/api/availableItems");
+      const res = await Axios.get(`${this.apiHost}/api/availableItems`);
       const availableItems = res.data;
 
       const categories = Object.keys(availableItems);
@@ -139,7 +143,7 @@ class Main extends React.Component {
   submitForm = async () => {
     const { items, history } = this.props;
     // posts items to api
-    const res = await Axios.post("/api/dynamic", items);
+    const res = await Axios.post(`${this.apiHost}/api/dynamic`, items);
     const filePath = res.data;
     console.log("about to redirect");
     sessionStorage.setItem("filePath", filePath);
