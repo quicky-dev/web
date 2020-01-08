@@ -39,6 +39,7 @@
   ],
   "proxy": "http://localhost:3005",
   "devDependencies": {
-    "@types/node": "^13.1.4"
+    "@types/node": "^13.1.4",
+    "jest": "^24.9.0"
   }
 }
