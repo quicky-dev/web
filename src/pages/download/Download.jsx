@@ -15,7 +15,7 @@ const styles = (theme) => ({
 class Download extends PureComponent {
   render() {
     const curlCmd = 'bash <curl -s https://api.quicky.dev/api/scripts/';
-    const scriptLocation = `${sessionStorage.getItem('filepath')}`;
+    const scriptLocation = `${sessionStorage.getItem('filePath')}`;
     return (
       <div className="dl-page">
         <div className="Instructions">
