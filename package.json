@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --ci",
     "eject": "react-scripts eject",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint --fix src/**/*.js",
     "docs": "documentation build src/** -f html -o docs",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
@@ -44,6 +44,11 @@
     "@types/node": "^13.1.4",
     "documentation": "^12.1.4",
     "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
     "husky": "^4.0.2"
   },
   "husky": {
