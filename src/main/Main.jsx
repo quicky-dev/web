@@ -29,6 +29,11 @@ const styles = (theme) => ({
   },
 });
 
+/**
+ * @name Main
+ * @description This shouldn't be named main
+ * @class
+ */
 class Main extends React.Component {
   constructor(props) {
     super(props);
