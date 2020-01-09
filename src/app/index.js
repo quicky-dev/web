@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route } from "react-router-dom";
 import "./App.css";
-import Main from "./main/Main";
-import Landing from "./pages/landing/Landing";
-import Download from "./pages/download/Download";
+import Main from "../main/Main";
+import Landing from "../pages/landing/Landing";
+import Download from "../pages/download/Download";
 
 class App extends Component {
   render() {

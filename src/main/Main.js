@@ -11,7 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import "./Main.css";
 import ItemSelection from "../components/itemselection/ItemSelection.js";
-import { itemsBeenSet } from "../actions/items";
+import { itemsBeenSet } from "../redux/actions/items";
 
 // Stepper Styling
 const styles = theme => ({
