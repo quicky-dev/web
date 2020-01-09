@@ -14,9 +14,8 @@ const styles = (theme) => ({
 
 class Download extends PureComponent {
   render() {
-    const cmdStr = 'bash <curl -s https://api.quicky.dev/api/scripts'`${sessionStorage.getItem(
-      'filepath',
-    )}}`;
+    const curlCmd = 'bash <curl -s https://api.quicky.dev/api/scripts/';
+    const scriptLocation = `${sessionStorage.getItem('filepath')}`;
     return (
       <div className="dl-page">
         <div className="Instructions">
@@ -26,7 +25,7 @@ class Download extends PureComponent {
             environment
           </p>
           <code>
-            <FilledInput underline value={cmdStr} />
+            <FilledInput underline value={curlCmd + scriptLocation} />
           </code>
         </div>
       </div>

@@ -214,7 +214,7 @@ class Main extends React.Component {
                 <Button
                   variant="contained"
                   className={classes.button}
-                  onClick={() => this.handleReset()}
+                  onClick={() => this.submitForm()}
                 >
                   Submit
                 </Button>
