@@ -40,7 +40,8 @@ Landing.defaultProps = {
 };
 
 Landing.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object),
+  // eslint-disable-next-line
+  classes: PropTypes.object
 };
 
 export default withStyles(styles)(Landing);

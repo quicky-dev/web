@@ -124,10 +124,12 @@ ItemSelection.defaultProps = {
 };
 
 ItemSelection.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object),
-  itemsObj: PropTypes.objectOf(PropTypes.object),
-  items: PropTypes.objectof(PropTypes.object),
-  dispatch: PropTypes.func,
+  /* eslint-disable */
+  classes: PropTypes.object,
+  itemsObj: PropTypes.object,
+  items: PropTypes.object,
+  dispatch: PropTypes.func
+  /* eslint-enable */
 };
 
 export default withStyles(styles)(ItemSelection);

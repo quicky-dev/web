@@ -90,7 +90,7 @@ class Main extends React.Component {
     }
 
     this.setState({
-      step: currentStep + step,
+      currentStep: currentStep + step,
       currentCategory: categories[currentStep + step],
     });
   };
@@ -138,7 +138,7 @@ class Main extends React.Component {
       availableItems,
       currentCategory,
       reset,
-      step,
+      currentStep,
       categories,
     } = this.state;
     if (isLoading === true) {
@@ -159,26 +159,29 @@ class Main extends React.Component {
         <h1>{itemsObj.currentCategory}</h1>
         <h3>{itemsObj.currentDesc}</h3>
         <ItemSelection
-          itemsObj={itemsObj}
-          resetBoxes={this.resetBoxes}
-          history={history}
-          location={location}
-          items={items}
           dispatch={dispatch}
+          history={history}
+          items={items}
+          itemsObj={itemsObj}
+          location={location}
           reset={reset}
+          resetBoxes={this.resetBoxes}
+          currentStep={currentStep}
         />
         {/* Stepper Component */}
         <div className={classes.root}>
-          <Stepper nonLinear activeStep={step}>
+          <Stepper nonLinear activeStep={currentStep}>
             {Object.keys(availableItems).map((label, index) => (
               <Step
                 key={label}
                 onClick={() => this.setState({
-                  step: index,
+                  currentStep: index,
                   currentCategory: categories[index],
                 })}
               >
-                <StepButton onClick={() => this.setState({ step: index })}>
+                <StepButton
+                  onClick={() => this.setState({ currentStep: index })}
+                >
                   {label}
                 </StepButton>
               </Step>
@@ -228,11 +231,13 @@ Main.defaultProps = {
 };
 
 Main.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.object),
-  items: PropTypes.objectof(PropTypes.object),
-  history: PropTypes.objectof(PropTypes.object),
-  location: PropTypes.objectof(PropTypes.object),
-  dispatch: PropTypes.func,
+  /* eslint-disable */
+  classes: PropTypes.object,
+  items: PropTypes.object,
+  history: PropTypes.object,
+  location: PropTypes.object,
+  dispatch: PropTypes.func
+  /* eslint-enable */
 };
 
 const mapStateToProps = (state) => ({
