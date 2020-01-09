@@ -5,7 +5,6 @@ import React from "react";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
 import Stepper from "@material-ui/core/Stepper";
-import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -142,7 +141,7 @@ class Main extends React.Component {
     const { items, history } = this.props;
     // posts items to api
     const res = await Axios.post(`${this.apiHost}/api/dynamic`, items);
-    const filePath = res.data;
+    sessionStorage.setItem("filePath", res.data);
     history.push("/setup");
   };
 
@@ -151,8 +150,7 @@ class Main extends React.Component {
       return <h1>Loading</h1>;
     }
 
-    const { classes, step } = this.props;
-    const steps = this.state.availableItems.length;
+    const { classes } = this.props;
     const availableItems = this.state.availableItems;
     const itemsObj = {
       currentCategory: this.state.currentCategory,

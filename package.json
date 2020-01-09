@@ -19,6 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "docs": "documentation build src/** -f html -o docs",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
     "deploy-backup-prod": "cp now_configs/stage.json now.json && now --scope quicky-dev -n stage-quicky-dev --prod",
@@ -39,6 +40,8 @@
   ],
   "proxy": "http://localhost:3005",
   "devDependencies": {
-    "@types/node": "^13.1.4"
+    "@types/node": "^13.1.4",
+    "documentation": "^12.1.4",
+    "husky": "^4.0.1"
   }
 }
