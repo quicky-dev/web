@@ -17,8 +17,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --ci",
     "eject": "react-scripts eject",
+    "lint": "eslint src/**/*.js",
     "docs": "documentation build src/** -f html -o docs",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
@@ -42,11 +43,12 @@
   "devDependencies": {
     "@types/node": "^13.1.4",
     "documentation": "^12.1.4",
-    "husky": "^4.0.1"
+    "eslint": "^6.8.0",
+    "husky": "^4.0.2"
   },
   "husky": {
-      "hooks": {
-          "pre-commit": "npm test"
-      }
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
