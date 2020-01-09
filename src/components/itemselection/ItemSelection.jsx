@@ -46,6 +46,11 @@ class ItemSelection extends Component {
 
   // handles what happens when an option is selected
   // this method helps us persist the checked checkboxes as well
+  /**
+   * @name handleSelect
+   * @description handle when an item is selected.
+   * @param {Object} item - The element represented in an on change event.
+   */
   handleSelect = async (item) => {
     try {
       const itemName = item.value;
@@ -113,6 +118,15 @@ class ItemSelection extends Component {
   }
 }
 
+ItemSelection.propTypes = {
+  /* eslint-disable */
+  classes: PropTypes.object,
+  itemsObj: PropTypes.object,
+  items: PropTypes.object,
+  dispatch: PropTypes.func
+  /* eslint-enable */
+};
+
 ItemSelection.defaultProps = {
   classes: {},
   itemsObj: {
@@ -121,15 +135,6 @@ ItemSelection.defaultProps = {
   },
   items: { 'BROKEN-ITEMS': ['This', 'is', 'broken'] },
   dispatch: () => console.error('DISPATCH NOT PROPERLY SET'),
-};
-
-ItemSelection.propTypes = {
-  /* eslint-disable */
-  classes: PropTypes.object,
-  itemsObj: PropTypes.object,
-  items: PropTypes.object,
-  dispatch: PropTypes.func
-  /* eslint-enable */
 };
 
 export default withStyles(styles)(ItemSelection);
