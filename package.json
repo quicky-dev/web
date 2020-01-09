@@ -43,5 +43,10 @@
     "@types/node": "^13.1.4",
     "documentation": "^12.1.4",
     "husky": "^4.0.1"
+  },
+  "husky": {
+      "hooks": {
+          "pre-commit": "npm test"
+      }
   }
 }
