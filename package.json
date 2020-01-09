@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-redux": "^6.0.1",
@@ -20,6 +21,8 @@
     "test": "react-scripts test --ci",
     "test-dev": "react-scripts test --watch",
     "eject": "react-scripts eject",
+    "lint": "eslint --fix src/**/*.jsx",
+    "docs": "documentation build src/** -f html -o docs",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
     "deploy-backup-prod": "cp now_configs/stage.json now.json && now --scope quicky-dev -n stage-quicky-dev --prod",
@@ -41,6 +44,19 @@
   "proxy": "http://localhost:3005",
   "devDependencies": {
     "@types/node": "^13.1.4",
-    "jest": "^24.9.0"
+    "babel-eslint": "^10.0.3",
+    "documentation": "^12.1.4",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "husky": "^4.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
