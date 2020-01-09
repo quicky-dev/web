@@ -143,8 +143,6 @@ class Main extends React.Component {
     // posts items to api
     const res = await Axios.post(`${this.apiHost}/api/dynamic`, items);
     const filePath = res.data;
-    console.log("about to redirect");
-    sessionStorage.setItem("filePath", filePath);
     history.push("/setup");
   };
 
@@ -192,71 +190,33 @@ class Main extends React.Component {
             ))}
           </Stepper>
           <div>
-            {this.allStepsCompleted() ? (
+            <div>
               <div>
-                <Typography className={classes.instructions}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={this.handleReset}>Reset</Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => this.handleStep(-1)}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className={classes.button}
+                  onClick={() => this.handleStep(1)}
+                >
+                  Next
+                </Button>
+                <Button
+                  variant="contained"
+                  className={classes.button}
+                  onClick={() => this.handleReset()}
+                >
+                  Submit
+                </Button>
               </div>
-            ) : (
-              <div>
-                <div>
-                  <Button
-                    className={classes.button}
-                    onClick={() => this.handleStep(-1)}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={() => this.handleStep(1)}
-                  >
-                    Next
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.button}
-                    onClick={() => this.handleReset()}
-                  >
-                    Reset
-                  </Button>
-                  {step !== steps &&
-                    (this.state.completed[step] ? (
-                      <Typography
-                        variant="caption"
-                        className={classes.completed}
-                      >
-                        Step {step} already completed
-                      </Typography>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={this.handleComplete}
-                      >
-                        {this.completedSteps() === steps - 1
-                          ? "Finish"
-                          : "Complete Step"}
-                      </Button>
-                    ))}
-                </div>
-              </div>
-            )}
-            {this.state.step ===
-            Object.keys(this.state.availableItems).length - 1 ? (
-              <Button
-                variant="contained"
-                color="primary"
-                className={classes.button}
-                onClick={() => this.submitForm()}
-              >
-                Submit
-              </Button>
-            ) : null}
+            </div>
           </div>
         </div>
       </div>
