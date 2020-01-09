@@ -1,53 +1,49 @@
-import Axios from "axios";
-import Button from "@material-ui/core/Button";
-import PropTypes from "prop-types";
-import React from "react";
-import Step from "@material-ui/core/Step";
-import StepButton from "@material-ui/core/StepButton";
-import Stepper from "@material-ui/core/Stepper";
-import { connect } from "react-redux";
-import { withStyles } from "@material-ui/core/styles";
+import Axios from 'axios';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+import React from 'react';
+import Step from '@material-ui/core/Step';
+import StepButton from '@material-ui/core/StepButton';
+import Stepper from '@material-ui/core/Stepper';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
 
-import "./Main.css";
-import ItemSelection from "../components/itemselection/ItemSelection.js";
-import { itemsBeenSet } from "../redux/actions/items";
+import './Main.css';
+import ItemSelection from '../components/itemselection/ItemSelection';
+import { itemsBeenSet } from '../redux/actions/items';
 
 // Stepper Styling
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    width: "95%"
+    width: '95%',
   },
   button: {
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   completed: {
-    display: "inline-block"
+    display: 'inline-block',
   },
   instructions: {
     marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit
-  }
+    marginBottom: theme.spacing.unit,
+  },
 });
 
 class Main extends React.Component {
-  static propTypes = {
-    step: PropTypes.number.isRequired
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      step: 0,
+      currentStep: 0,
       availableItems: {},
-      currentCategory: "",
+      currentCategory: '',
       completed: {},
-      isLoading: true
+      isLoading: true,
     };
     this.submitForm = this.submitForm.bind(this);
     this.setupItems = this.setupItems.bind(this);
     this.apiHost = process.env.REACT_APP_DEVELOPMENT_MODE
-      ? ""
-      : "https://api.quicky.dev";
+      ? ''
+      : 'https://api.quicky.dev';
   }
 
   async componentDidMount() {
@@ -56,6 +52,7 @@ class Main extends React.Component {
 
   setupItems = async () => {
     try {
+      const { dispatch } = this.props;
       const res = await Axios.get(`${this.apiHost}/api/availableItems`);
       const availableItems = res.data;
 
@@ -76,41 +73,28 @@ class Main extends React.Component {
         categories,
         currentCategory,
         completed,
-        isLoading: false
+        isLoading: false,
       });
 
-      this.props.dispatch(itemsBeenSet(items));
+      dispatch(itemsBeenSet(items));
     } catch (err) {
       // eslint-disable-next-line
       console.log(err);
     }
   };
 
-  handleStep = step => {
-    if (
-      this.state.step + step < 0 ||
-      this.state.step + step >= this.state.categories.length
-    ) {
+  handleStep = (step) => {
+    const { currentStep, categories } = this.state;
+    if (currentStep + step < 0 || currentStep + step >= categories.length) {
       return;
     }
+
     this.setState({
-      step: this.state.step + step,
-      currentCategory: this.state.categories[this.state.step + step]
+      step: currentStep + step,
+      currentCategory: categories[currentStep + step],
     });
   };
 
-  handleComplete = () => {
-    const { completed } = this.state;
-    const { step } = this.props;
-
-    completed[step] = true;
-    this.setState({
-      completed
-    });
-    this.handleNext();
-  };
-
-  // when form is reset, resets the global items property and unchecks all checkboxes
   handleReset = async () => {
     try {
       // currently this will reset the checkboxes
@@ -120,42 +104,54 @@ class Main extends React.Component {
       await this.setupItems();
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log("There was an error resetting the form: ", err);
+      console.log('There was an error resetting the form: ', err);
     }
   };
-
-  completedSteps() {
-    return Object.keys(this.state.completed).length;
-  }
-
-  isLastStep() {
-    return this.state.activeStep === this.state.vailableItems.length - 1;
-  }
-
-  allStepsCompleted() {
-    return this.completedSteps() === this.state.availableItems.length;
-  }
 
   // sends global items store to api to genearte script
   submitForm = async () => {
     const { items, history } = this.props;
     // posts items to api
     const res = await Axios.post(`${this.apiHost}/api/dynamic`, items);
-    sessionStorage.setItem("filePath", res.data);
-    history.push("/setup");
+    sessionStorage.setItem('filePath', res.data);
+    history.push('/setup');
   };
 
+  completedSteps() {
+    const { completed } = this.state;
+    return Object.keys(completed).length;
+  }
+
+  isLastStep() {
+    const { currentStep, availableItems } = this.state;
+    return currentStep === availableItems.length - 1;
+  }
+
+  allStepsCompleted() {
+    const { availableItems } = this.state;
+    return this.completedSteps() === availableItems.length;
+  }
+
   render() {
-    if (this.state.isLoading === true) {
+    const {
+      isLoading,
+      availableItems,
+      currentCategory,
+      reset,
+      step,
+      categories,
+    } = this.state;
+    if (isLoading === true) {
       return <h1>Loading</h1>;
     }
 
-    const { classes } = this.props;
-    const availableItems = this.state.availableItems;
+    const {
+      classes, history, location, items, dispatch,
+    } = this.props;
     const itemsObj = {
-      currentCategory: this.state.currentCategory,
-      currentDesc: availableItems[this.state.currentCategory].Description,
-      currentItems: availableItems[this.state.currentCategory].Items
+      currentCategory,
+      currentDesc: availableItems[currentCategory].Description,
+      currentItems: availableItems[currentCategory].Items,
     };
 
     return (
@@ -165,21 +161,22 @@ class Main extends React.Component {
         <ItemSelection
           itemsObj={itemsObj}
           resetBoxes={this.resetBoxes}
-          {...this.props}
-          reset={this.state.reset}
+          history={history}
+          location={location}
+          items={items}
+          dispatch={dispatch}
+          reset={reset}
         />
         {/* Stepper Component */}
         <div className={classes.root}>
-          <Stepper nonLinear activeStep={this.state.step}>
-            {Object.keys(this.state.availableItems).map((label, index) => (
+          <Stepper nonLinear activeStep={step}>
+            {Object.keys(availableItems).map((label, index) => (
               <Step
                 key={label}
-                onClick={() =>
-                  this.setState({
-                    step: index,
-                    currentCategory: this.state.categories[index]
-                  })
-                }
+                onClick={() => this.setState({
+                  step: index,
+                  currentCategory: categories[index],
+                })}
               >
                 <StepButton onClick={() => this.setState({ step: index })}>
                   {label}
@@ -222,14 +219,24 @@ class Main extends React.Component {
   }
 }
 
-Main.propTypes = {
-  classes: PropTypes.object
+Main.defaultProps = {
+  classes: {},
+  items: { 'BROKEN-ITEMS': ['This', 'is', 'broken'] },
+  history: {},
+  location: {},
+  dispatch: () => console.error('DISPATCH NOT PROPERLY SET'),
 };
 
-const mapStateToProps = state => {
-  return {
-    items: state.items
-  };
+Main.propTypes = {
+  classes: PropTypes.objectOf(PropTypes.object),
+  items: PropTypes.objectof(PropTypes.object),
+  history: PropTypes.objectof(PropTypes.object),
+  location: PropTypes.objectof(PropTypes.object),
+  dispatch: PropTypes.func,
 };
+
+const mapStateToProps = (state) => ({
+  items: state.items,
+});
 
 export default withStyles(styles)(connect(mapStateToProps)(Main));

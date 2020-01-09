@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import "./ItemSelection.css";
-import { withStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
-//import Button from '@material-ui/core/Button';
-import Checkbox from "@material-ui/core/Checkbox";
-import { itemsAdd, itemsRemove } from "../../redux/actions/items";
+import React, { Component } from 'react';
+import './ItemSelection.css';
+import { withStyles } from '@material-ui/core';
+import PropTypes from 'prop-types';
+// import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import { itemsAdd, itemsRemove } from '../../redux/actions/items';
 
-const styles = theme => ({
+const styles = (theme) => ({
   button: {
-    margin: theme.spacing.unit
+    margin: theme.spacing.unit,
   },
   input: {
-    display: "none"
-  }
+    display: 'none',
+  },
 });
 
 class ItemSelection extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: {}
+      selected: {},
     };
 
     this.toggleActions = this.toggleActions.bind(this);
@@ -33,24 +33,20 @@ class ItemSelection extends Component {
    * @param {boolean} checked - if the item has been checked or not.
    */
   toggleActions = (item, checked) => {
-    const { itemsObj } = this.props;
+    const { itemsObj, dispatch, items } = this.props;
     // checking if box is checked
     if (checked) {
       // if checked running our action itemsAdd
-      this.props.dispatch(
-        itemsAdd(this.props.items, itemsObj.currentCategory, item.value)
-      );
+      dispatch(itemsAdd(items, itemsObj.currentCategory, item.value));
     } else {
       // else, (uncheck) calling our action itemsRemove
-      this.props.dispatch(
-        itemsRemove(this.props.items, itemsObj.currentCategory, item.value)
-      );
+      dispatch(itemsRemove(items, itemsObj.currentCategory, item.value));
     }
   };
 
   // handles what happens when an option is selected
   // this method helps us persist the checked checkboxes as well
-  handleSelect = async item => {
+  handleSelect = async (item) => {
     try {
       const itemName = item.value;
       const { selected } = this.state;
@@ -68,7 +64,7 @@ class ItemSelection extends Component {
       // If we're selecting a shell, we have to ensure that only one is selected
       // because our installation script sets it as the primary shell for the
       // user.
-      if (itemsObj.currentCategory === "Shells") {
+      if (itemsObj.currentCategory === 'Shells') {
         for (let i = 0; i < itemsObj.currentItems.length; i += 1) {
           const shell = itemsObj.currentItems[i];
           if (itemName !== shell) {
@@ -79,7 +75,7 @@ class ItemSelection extends Component {
 
       // push the new selected option into state
       await this.setState({
-        selected: newSelected
+        selected: newSelected,
       });
 
       // call our toggleActions functions which handles dispatching
@@ -87,25 +83,26 @@ class ItemSelection extends Component {
       this.toggleActions(item, selected[itemName]);
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.log("Error selecting this options: ", err);
+      console.log('Error selecting this options: ', err);
     }
   };
 
   render() {
     // eslint-disable-next-line
     const { itemsObj, classes, step, items } = this.props;
+    const { selected } = this.state;
 
     return (
       <div className="item-selection">
         <div className="items">
-          {itemsObj.currentItems.map(opt => (
+          {itemsObj.currentItems.map((opt) => (
             <div key={opt}>
               <Checkbox
                 name={itemsObj.currentCategory}
                 value={opt}
-                checked={this.state.selected[opt] === true}
-                onChange={e => this.handleSelect(e.target)}
-              ></Checkbox>
+                checked={selected[opt] === true}
+                onChange={(e) => this.handleSelect(e.target)}
+              />
               {opt}
               <br />
             </div>
@@ -116,8 +113,21 @@ class ItemSelection extends Component {
   }
 }
 
+ItemSelection.defaultProps = {
+  classes: {},
+  itemsObj: {
+    currentCategory: 'FAILED TO LOAD ITEMS',
+    currentItems: 'THIS WAS GENERATED FROM DEF. PROP TYPES',
+  },
+  items: { 'BROKEN-ITEMS': ['This', 'is', 'broken'] },
+  dispatch: () => console.error('DISPATCH NOT PROPERLY SET'),
+};
+
 ItemSelection.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.objectOf(PropTypes.object),
+  itemsObj: PropTypes.objectOf(PropTypes.object),
+  items: PropTypes.objectof(PropTypes.object),
+  dispatch: PropTypes.func,
 };
 
 export default withStyles(styles)(ItemSelection);

@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
-import "./App.css";
-import Main from "../main/Main";
-import Landing from "../pages/landing/Landing";
-import Download from "../pages/download/Download";
+import React, { PureComponent } from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import './App.css';
+import Main from '../main/Main';
+import Landing from '../pages/landing/Landing';
+import Download from '../pages/download/Download';
 
 /**
  * @name App
  * @class
  * @classdesc The main container for pages & components.
  */
-class App extends Component {
+
+class App extends PureComponent {
   render() {
     return (
       <BrowserRouter>
