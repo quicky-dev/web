@@ -21,7 +21,7 @@
     "test": "react-scripts test --ci",
     "test-dev": "react-scripts test --watch",
     "eject": "react-scripts eject",
-    "lint": "eslint --fix src/**/*.js",
+    "lint": "eslint --fix src/**/*.jsx",
     "docs": "documentation build src/** -f html -o docs",
     "deploy-main-prod": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev --prod",
     "deploy-main-stage": "cp now_configs/deploy.json now.json && now --scope quicky-dev -n quicky-dev",
