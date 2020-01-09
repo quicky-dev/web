@@ -1,19 +1,17 @@
-import React from "react";
-//import Download from '../download/Download';
-import Form from "../pages/form/Form";
-import "./Main.css";
-// Horizontal Linear Stepper
+import Axios from "axios";
+import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
+import React from "react";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
-import Button from "@material-ui/core/Button";
+import Stepper from "@material-ui/core/Stepper";
 import Typography from "@material-ui/core/Typography";
-
-import { itemsBeenSet } from "../actions/items";
 import { connect } from "react-redux";
-import Axios from "axios";
+import { withStyles } from "@material-ui/core/styles";
+
+import "./Main.css";
+import ItemSelection from "../components/itemselection/ItemSelection.js";
+import { itemsBeenSet } from "../actions/items";
 
 // Stepper Styling
 const styles = theme => ({
@@ -51,7 +49,6 @@ class Main extends React.Component {
     this.apiHost = process.env.REACT_APP_DEVELOPMENT_MODE
       ? ""
       : "https://api.quicky.dev";
-    console.log(process.env.REACT_APP_DEVELOPMENT_MODE);
   }
 
   async componentDidMount() {
@@ -67,6 +64,7 @@ class Main extends React.Component {
 
       const items = {};
       const completed = {};
+
       for (let i = 0; i < categories.length; i += 1) {
         items[categories[i]] = [];
         completed[i] = false;
@@ -166,7 +164,9 @@ class Main extends React.Component {
 
     return (
       <div className="main">
-        <Form
+        <h1>{itemsObj.currentCategory}</h1>
+        <h3>{itemsObj.currentDesc}</h3>
+        <ItemSelection
           itemsObj={itemsObj}
           resetBoxes={this.resetBoxes}
           {...this.props}
