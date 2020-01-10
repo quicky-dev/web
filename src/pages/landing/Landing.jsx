@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import CTA from '../../components/cta/CallToAction';
 import Navbar from '../../components/navbar/Navbar';
 
-
 const Page = styled.div`
   display: flex;
   flex-flow: column;
@@ -24,18 +23,17 @@ const Heading = styled.h1`
   max-width: 642px;
   letter-spacing: 2px;
   line-height: 1.2em;
-  margin: .25em 0;
+  margin: 0.25em 0;
 `;
 
 const Subheading = styled.p`
   font-size: 1.75em;
   max-width: 750px;
-  letter-spacing: 1.0px;
+  letter-spacing: 1px;
   line-height: 1.2em;
-  margin-block-start: .35em;
-  margin-block-end: .35em;
+  margin-block-start: 0.35em;
+  margin-block-end: 0.35em;
 `;
-
 
 function Landing(props) {
   const { classes } = props;
@@ -49,7 +47,7 @@ function Landing(props) {
           Fresh install? New computer? Quicky sets up your developer environment
           with just a few clicks.
         </Subheading>
-        <CTA endpoint="/form" label="Get Started" />
+        <CTA endpoint="/os" label="Get Started" />
       </Content>
     </Page>
   );

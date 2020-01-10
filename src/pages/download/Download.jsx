@@ -9,9 +9,11 @@ const FormContainer = styled.div`
   min-height: 70vh;
   padding: 4em;
   border-radius: 20px;
-    -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  -moz-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.11);
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -19,7 +21,7 @@ const FormContainer = styled.div`
 `;
 
 const DownloadPage = styled.div`
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   height: 100%;
   display: flex;
   align-items: center;
@@ -28,7 +30,7 @@ const DownloadPage = styled.div`
 
 const Heading = styled.h1`
   font-size: 6em;
-  margin: .15em 0;
+  margin: 0.15em 0;
 `;
 
 const Subheading = styled.h3`
@@ -36,20 +38,17 @@ const Subheading = styled.h3`
   margin-bottom: 2em;
 `;
 
-const CopySection = styled.div`
-`;
+const CopySection = styled.div``;
 
 const Script = styled.input`
   width: 50%;
 `;
 
-const CopyBtn = styled(Clipboard)`
-  
-`;
+const CopyBtn = styled(Clipboard)``;
 
 class Download extends PureComponent {
   render() {
-    const curlCmd = 'bash <curl -s https://api.quicky.dev/api/scripts/';
+    const curlCmd = 'bash <curl -s https://api.quicky.dev/api/v1/os/';
     const scriptLocation = `${sessionStorage.getItem('filePath')}`;
     return (
       <DownloadPage>

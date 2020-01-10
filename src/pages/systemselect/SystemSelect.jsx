@@ -9,9 +9,11 @@ const FormContainer = styled.div`
   min-height: 70vh;
   padding: 4em;
   border-radius: 20px;
-    -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  -moz-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.11);
   justify-content: center;
   display: flex;
   flex-direction: column;
@@ -19,7 +21,7 @@ const FormContainer = styled.div`
 `;
 
 const SystemPage = styled.div`
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   height: 100%;
   display: flex;
   align-items: center;
@@ -28,12 +30,10 @@ const SystemPage = styled.div`
 
 const Heading = styled.h1`
   font-size: 6em;
-  margin: .15em 0;
+  margin: 0.15em 0;
 `;
 
-const Options = styled.div`
-
-`;
+const Options = styled.div``;
 
 const OSX = styled.img`
   height: 100px;
@@ -55,11 +55,11 @@ export default class SystemSelect extends PureComponent {
         <FormContainer>
           <Heading>Operating Systems</Heading>
           <Options>
-            <SystemOption href="/">
-              <OSX src={osx} alt="osx" />
+            <SystemOption href="/form/macos">
+              <OSX src={osx} alt="ubuntu" />
             </SystemOption>
-            <SystemOption href="/">
-              <LINUX src={linux} alt="linux" />
+            <SystemOption href="/form/ubuntu">
+              <LINUX src={linux} alt="ubuntu" />
             </SystemOption>
           </Options>
         </FormContainer>
