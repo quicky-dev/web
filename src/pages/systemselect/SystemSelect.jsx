@@ -1,5 +1,7 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import osx from '../../assets/apple-icon.svg';
+import linux from '../../assets/linux-icon.svg';
 
 const FormContainer = styled.div`
   background-color: #fff;
@@ -33,6 +35,19 @@ const Options = styled.div`
 
 `;
 
+const OSX = styled.img`
+  height: 100px;
+`;
+
+const LINUX = styled.img`
+  height: 100px;
+`;
+
+const SystemOption = styled.a`
+  border-radius: 5px;
+  border: 2px solid #333;
+`;
+
 export default class SystemSelect extends PureComponent {
   render() {
     return (
@@ -40,7 +55,12 @@ export default class SystemSelect extends PureComponent {
         <FormContainer>
           <Heading>Operating Systems</Heading>
           <Options>
-            
+            <SystemOption href="/">
+              <OSX src={osx} alt="osx" />
+            </SystemOption>
+            <SystemOption href="/">
+              <LINUX src={linux} alt="linux" />
+            </SystemOption>
           </Options>
         </FormContainer>
       </SystemPage>
