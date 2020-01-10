@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
 
 `;
 
-class CallToAction extends PureComponent() {
+class CallToAction extends PureComponent {
   render() {
     const { endpoint, label } = this.props;
     return (
