@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './ItemSelection.css';
 import { withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-// import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import { itemsAdd, itemsRemove } from '../../redux/actions/items';
 
