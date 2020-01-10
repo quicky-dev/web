@@ -8,9 +8,46 @@ import Stepper from '@material-ui/core/Stepper';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 
-import './Main.css';
+import styled from 'styled-components';
 import ItemSelection from '../components/itemselection/ItemSelection';
 import { itemsBeenSet } from '../redux/actions/items';
+
+const FormContainer = styled.div`
+  background-color: #fff;
+  min-width: 70vw;
+  min-height: 70vh;
+  padding: 4em;
+  border-radius: 20px;
+    -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+    -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+  justify-content: space-around;
+  display: flex;
+  flex-direction: column;
+  
+`;
+
+const WebApp = styled.div`
+  background-color: #D3D3D3;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Section = styled.div`
+  text-align: center;
+`;
+
+const SectionHeading = styled.h1`
+  font-size: 6em;
+  margin: .15em 0;
+`;
+
+const SectionSubHeading = styled.h3`
+  font-size: 1.5em;
+  margin: 0 0;
+`;
 
 // Stepper Styling
 const styles = (theme) => ({
@@ -147,7 +184,15 @@ class Main extends React.Component {
       categories,
     } = this.state;
     if (isLoading === true) {
-      return <h1>Loading</h1>;
+      return (
+        <WebApp>
+          <FormContainer>
+            <Section>
+              <SectionSubHeading>Loading...</SectionSubHeading>
+            </Section>
+          </FormContainer>
+        </WebApp>
+      );
     }
 
     const {
@@ -160,69 +205,73 @@ class Main extends React.Component {
     };
 
     return (
-      <div className="main">
-        <h1>{itemsObj.currentCategory}</h1>
-        <h3>{itemsObj.currentDesc}</h3>
-        <ItemSelection
-          dispatch={dispatch}
-          history={history}
-          items={items}
-          itemsObj={itemsObj}
-          location={location}
-          reset={reset}
-          resetBoxes={this.resetBoxes}
-          currentStep={currentStep}
-        />
-        {/* Stepper Component */}
-        <div className={classes.root}>
-          <Stepper nonLinear activeStep={currentStep}>
-            {Object.keys(availableItems).map((label, index) => (
-              <Step
-                key={label}
-                onClick={() => this.setState({
-                  currentStep: index,
-                  currentCategory: categories[index],
-                })}
-              >
-                <StepButton
-                  onClick={() => this.setState({ currentStep: index })}
+      <WebApp>
+        <FormContainer>
+          <Section>
+            <SectionHeading>{itemsObj.currentCategory}</SectionHeading>
+            <SectionSubHeading>{itemsObj.currentDesc}</SectionSubHeading>
+          </Section>
+          <ItemSelection
+            dispatch={dispatch}
+            history={history}
+            items={items}
+            itemsObj={itemsObj}
+            location={location}
+            reset={reset}
+            resetBoxes={this.resetBoxes}
+            currentStep={currentStep}
+          />
+          {/* Stepper Component */}
+          <div className={classes.root}>
+            <Stepper nonLinear activeStep={currentStep}>
+              {Object.keys(availableItems).map((label, index) => (
+                <Step
+                  key={label}
+                  onClick={() => this.setState({
+                    currentStep: index,
+                    currentCategory: categories[index],
+                  })}
                 >
-                  {label}
-                </StepButton>
-              </Step>
-            ))}
-          </Stepper>
-          <div>
+                  <StepButton
+                    onClick={() => this.setState({ currentStep: index })}
+                  >
+                    {label}
+                  </StepButton>
+                </Step>
+              ))}
+            </Stepper>
             <div>
               <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => this.handleStep(-1)}
-                >
-                  Back
-                </Button>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className={classes.button}
-                  onClick={() => this.handleStep(1)}
-                >
-                  Next
-                </Button>
-                <Button
-                  variant="contained"
-                  className={classes.button}
-                  onClick={() => this.submitForm()}
-                >
-                  Submit
-                </Button>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => this.handleStep(-1)}
+                  >
+                    Back
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.button}
+                    onClick={() => this.handleStep(1)}
+                  >
+                    Next
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className={classes.button}
+                    onClick={() => this.submitForm()}
+                  >
+                    Submit
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </FormContainer>
+      </WebApp>
     );
   }
 }
