@@ -47,8 +47,10 @@ const CopyBtn = styled(Clipboard)``;
 
 class Download extends PureComponent {
   render() {
-    const curlCmd = 'bash <curl -s https://api.quicky.dev/api/v1/os/';
     const scriptLocation = `${sessionStorage.getItem('filePath')}`;
+    const installCommand = `
+    bash <(curl -s https://api.quicky.dev/api/v1/os/${scriptLocation})
+    `;
     return (
       <DownloadPage>
         <FormContainer>
@@ -58,10 +60,8 @@ class Download extends PureComponent {
             environment
           </Subheading>
           <CopySection>
-            <Script value={curlCmd + scriptLocation} />
-            <CopyBtn data-clipboard-text={curlCmd + scriptLocation}>
-              copy
-            </CopyBtn>
+            <Script value={installCommand} />
+            <CopyBtn data-clipboard-text={installCommand}>copy</CopyBtn>
           </CopySection>
         </FormContainer>
       </DownloadPage>
