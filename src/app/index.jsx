@@ -26,7 +26,7 @@ class App extends PureComponent {
 
           <Route path="/os" exact component={SystemSelect} />
 
-          <Route path="/form" exact component={Main} />
+          <Route path="/form/:os" component={Main} />
 
           <Route path="/setup" exact component={Download} />
         </Application>

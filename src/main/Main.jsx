@@ -18,17 +18,18 @@ const FormContainer = styled.div`
   min-height: 70vh;
   padding: 4em;
   border-radius: 20px;
-    -webkit-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    -moz-box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
-    box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.11);
+  -webkit-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  -moz-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
+    0 10px 10px rgba(0, 0, 0, 0.11);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.11);
   justify-content: space-around;
   display: flex;
   flex-direction: column;
-  
 `;
 
 const WebApp = styled.div`
-  background-color: #D3D3D3;
+  background-color: #d3d3d3;
   height: 100%;
   display: flex;
   align-items: center;
@@ -41,7 +42,7 @@ const Section = styled.div`
 
 const SectionHeading = styled.h1`
   font-size: 6em;
-  margin: .15em 0;
+  margin: 0.15em 0;
 `;
 
 const SectionSubHeading = styled.h3`
@@ -94,8 +95,11 @@ class Main extends React.Component {
 
   setupItems = async () => {
     try {
-      const { dispatch } = this.props;
-      const res = await Axios.get(`${this.apiHost}/api/availableItems`);
+      const { dispatch, match } = this.props;
+      const { os } = match.params;
+      const res = await Axios.get(
+        `${this.apiHost}/api/v1/os/${os}/availableItems`,
+      );
       const availableItems = res.data;
 
       const categories = Object.keys(availableItems);
@@ -152,10 +156,14 @@ class Main extends React.Component {
 
   // sends global items store to api to genearte script
   submitForm = async () => {
-    const { items, history } = this.props;
+    const { items, history, match } = this.props;
+    const { os } = match.params;
     // posts items to api
-    const res = await Axios.post(`${this.apiHost}/api/dynamic`, items);
-    sessionStorage.setItem('filePath', res.data);
+    const res = await Axios.post(
+      `${this.apiHost}/api/v1/os/${os}/dynamic`,
+      items,
+    );
+    sessionStorage.setItem('filePath', `${os}/scripts/${res.data}`);
     history.push('/setup');
   };
 
@@ -281,6 +289,7 @@ Main.defaultProps = {
   items: { 'BROKEN-ITEMS': ['This', 'is', 'broken'] },
   history: {},
   location: {},
+  match: {},
   dispatch: () => console.error('DISPATCH NOT PROPERLY SET'),
 };
 
@@ -289,6 +298,7 @@ Main.propTypes = {
   classes: PropTypes.object,
   items: PropTypes.object,
   history: PropTypes.object,
+  match: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func
   /* eslint-enable */
