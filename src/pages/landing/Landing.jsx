@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import CTA from '../../components/cta/CallToAction';
 import Navbar from '../../components/navbar/Navbar';
 
@@ -35,31 +34,23 @@ const Subheading = styled.p`
   margin-block-end: 0.35em;
 `;
 
-function Landing(props) {
-  const { classes } = props;
-  return (
-    <Page>
-      <Navbar />
-      {/* TODO: create and insert navbar component */}
-      <Content>
-        <Heading>Get developing in no time!</Heading>
-        <Subheading>
-          Fresh install? New computer? Quicky sets up your developer environment
-          with just a few clicks.
-        </Subheading>
-        <CTA endpoint="/os" label="Get Started" />
-      </Content>
-    </Page>
-  );
+class Landing extends PureComponent {
+  render() {
+    return (
+      <Page>
+        <Navbar />
+        {/* TODO: create and insert navbar component */}
+        <Content>
+          <Heading>Get developing in no time!</Heading>
+          <Subheading>
+            Fresh install? New computer? Quicky sets up your developer
+            environment with just a few clicks.
+          </Subheading>
+          <CTA endpoint="/os" label="Get Started" />
+        </Content>
+      </Page>
+    );
+  }
 }
-
-Landing.defaultProps = {
-  classes: { button: 'yeet' },
-};
-
-Landing.propTypes = {
-  // eslint-disable-next-line
-  classes: PropTypes.object
-};
 
 export default Landing;

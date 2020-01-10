@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
 import Clipboard from 'react-clipboard.js';
 
 const FormContainer = styled.div`
