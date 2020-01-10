@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import CTA from '../../components/cta/CallToAction';
 import Navbar from '../../components/navbar/Navbar';
+import gradient from '../../assets/gradient.svg';
 
 const Page = styled.div`
   display: flex;
   flex-flow: column;
   height: 100%;
+  background: url(${gradient}) no-repeat;
+  background-size: cover;
 `;
 
 const Content = styled.div`
