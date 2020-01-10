@@ -14,7 +14,7 @@ const FormContainer = styled.div`
   -moz-box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15),
     0 10px 10px rgba(0, 0, 0, 0.11);
   box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.11);
-  justify-content: center;
+  justify-content: space-around;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -33,7 +33,11 @@ const Heading = styled.h1`
   margin: 0.15em 0;
 `;
 
-const Options = styled.div``;
+const Options = styled.div`
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+`;
 
 const OSX = styled.img`
   height: 100px;
@@ -44,8 +48,10 @@ const LINUX = styled.img`
 `;
 
 const SystemOption = styled.a`
-  border-radius: 5px;
-  border: 2px solid #333;
+  border-radius: 15px;
+  padding: 30px;
+  background-color: #d3d3d3;
+  color: #888;
 `;
 
 export default class SystemSelect extends PureComponent {
