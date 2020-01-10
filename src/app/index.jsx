@@ -5,6 +5,7 @@ import './App.css';
 import Main from '../main/Main';
 import Landing from '../pages/landing/Landing';
 import Download from '../pages/download/Download';
+import SystemSelect from '../pages/systemselect/SystemSelect';
 
 /**
  * @name App
@@ -22,6 +23,8 @@ class App extends PureComponent {
       <BrowserRouter>
         <Application>
           <Route path="/" exact component={Landing} />
+
+          <Route path="/os" exact component={SystemSelect} />
 
           <Route path="/form" exact component={Main} />
 
