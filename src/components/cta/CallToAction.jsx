@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const StyledLink = styled(Link)`
   background-color: #fa983a;
@@ -24,5 +25,17 @@ class CallToAction extends PureComponent {
     );
   }
 }
+
+CallToAction.defaultProps = {
+  endpoint: 'INVALID ENDPOINT',
+  label: 'BROKEN LABEL'
+};
+
+CallToAction.propTypes = {
+  /* eslint-disable */
+  endpoint: PropTypes.string,
+  label: PropTypes.string
+  /* eslint-enable */
+};
 
 export default CallToAction;
